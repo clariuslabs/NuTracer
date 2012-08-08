@@ -5,6 +5,7 @@ obj
 # mstest test results
 TestResults
 packages
+Drop
 /apikey.txt
 *.suo
 *.user
