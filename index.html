@@ -1,0 +1,122 @@
+<!doctype html>
+<!-- The Time Machine GitHub pages theme was designed and developed by Jon Rohan, on Feb 7, 2012. -->
+<!-- Follow him for fun. http://twitter.com/jonrohan. Tail his code on http://github.com/jonrohan -->
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+  <link rel="stylesheet" href="stylesheets/stylesheet.css" media="screen"/>
+  <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="javascripts/script.js"></script>
+
+  <title>Tracer</title>
+  <meta name="description" content="Tracer is a minimalist unified tracing/logging interface that abstracts the specific logging libraries from consuming code.">
+
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <header>
+      <h1 class="title">Tracer</h1>
+    </header>
+    <div id="container">
+      <p class="tagline">Tracer is a minimalist unified tracing/logging interface that abstracts the specific logging libraries from consuming code.</p>
+      <div id="main" role="main">
+        <div class="download-bar">
+        <div class="inner">
+          <a href="https://github.com/danielkzu/tracer/tarball/master" class="download-button tar"><span>Download</span></a>
+          <a href="https://github.com/danielkzu/tracer/zipball/master" class="download-button zip"><span>Download</span></a>
+          <a href="https://github.com/danielkzu/tracer" class="code">View Tracer on GitHub</a>
+        </div>
+        <span class="blc"></span><span class="trc"></span>
+        </div>
+        <article class="markdown-body">
+          <h3>What</h3>
+
+<p>Tracer is a minimalist unified tracing/logging interface that abstracts the specific logging libraries from consuming code.</p>
+
+<p>It's designed to optimize the existing capabilities of the underlying libraries without compromising their performance or features.</p>
+
+<p>It provides adapters for log4net, NLog, Enterprise Library Logging and System.Diagnostics.</p>
+
+<h3>Why</h3>
+
+<p>Tracing or logging is something everyone needs to consider and adopt from day one in any application. Having to decide on a specific framework or library up-front, and spreading that implementation-specific code throughout the code base is simply too risky. Why not just start with the simplest possible abstraction and decide on the implementation later and in a single place, the bootstrapping/app start?</p>
+
+<h3>Where</h3>
+
+<p>You can get Tracer at:</p>
+
+<ul>
+<li><a href="http://kzu.to/PEgjcT">Main interfaces</a></li>
+<li><a href="http://kzu.to/PEgl4A">log4net adapter</a></li>
+<li><a href="http://kzu.to/PEgncC">NLog adapter</a></li>
+<li><a href="http://kzu.to/PEgoxc">Enterprise Library Logging 5.0 adapter</a></li>
+<li><a href="http://kzu.to/PEiP2S">System.Diagnostics adapter</a></li>
+</ul><p>Fork it on <a href="http://kzu.to/PEiUne">GitHub</a>.</p>
+
+<h3>How</h3>
+
+<p>As elaborated in the <a href="http://kzu.to/PEgB3o" title="Tracer: the unified, dead-simple API for all logging frameworks in existence">introductory blog post</a>, it's not worth it to introduce a binary dependency for something that is really extremely simple (just 3 types). So you install via <a href="http://nuget.org/">nuget</a> the main interfaces in your "Common" or "Core" project which is shared by the components that will do the logging, by using:</p>
+
+<pre><code>install-package tracer
+</code></pre>
+
+<p>and then use the following code to retrieve a tracer and log to it:</p>
+
+<pre><code>public class MyComponent
+{
+    private static readonly ITracer tracer = Tracer.Get&lt;MyComponent&gt;();
+
+    public void DoSomething()
+    {
+        tracer.Info("Doing something...");
+        ...
+    }
+}
+</code></pre>
+
+<p>Your bootstrapper or application startup code will take a dependency on a concrete adapter implementation mentioned in the Where section, and initialize the Tracer with the following line:</p>
+
+<pre><code>Tracer.Initialize(new TracerManager());
+</code></pre>
+
+<p>And that would be all!</p>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="owner">
+      <p><a href="https://github.com/danielkzu" class="avatar"><img src="https://secure.gravatar.com/avatar/7e92eefff275a0ce3fc5bf98d6cf9798?s=30&amp;d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-140.png" width="48" height="48"/></a> <a href="https://github.com/danielkzu">danielkzu</a> maintains <a href="https://github.com/danielkzu/tracer">Tracer</a></p>
+
+
+      </div>
+      <div class="creds">
+        <small>This page generated using <a href="https://pages.github.com/">GitHub Pages</a><br/>theme by <a href="http://twitter.com/jonrohan/">Jon Rohan</a></small>
+      </div>
+    </footer>
+  </div>
+  <div class="current-section">
+    <a href="#top">Scroll to top</a>
+    <a href="https://github.com/danielkzu/tracer/tarball/master" class="tar">tar</a><a href="https://github.com/danielkzu/tracer/zipball/master" class="zip">zip</a><a href="" class="code">source code</a>
+    <p class="name"></p>
+  </div>
+
+            <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-3240245-5");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+</body>
+</html>
