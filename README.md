@@ -27,16 +27,16 @@ As elaborated in the [introductory blog post](http://kzu.to/PEgB3o "Tracer: the 
  
 and then use the following code to retrieve a tracer and log to it:
 
-```public class MyComponent
-{
-    private static readonly ITracer tracer = Tracer.Get<MyComponent>();
- 
-    public void DoSomething()
-    {
-        tracer.Info("Doing something...");
-        ...
-    }
-}```
+	public class MyComponent
+	{
+		private static readonly ITracer tracer = Tracer.Get<MyComponent>();
+	 
+		public void DoSomething()
+		{
+			tracer.Info("Doing something...");
+			...
+		}
+	}
 
 Your bootstrapper or application startup code will take a dependency on a concrete adapter implementation mentioned in the Where section, and initialize the Tracer with the following line:
 
