@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<!--
+    ============================================================
+				FindSpecFile
+
+    Inline task that grabs the first @(NuSpec) item and makes it
+	the current spec file.
+    ============================================================
+    -->
+	<UsingTask TaskName="FindSpecFile"
+			   TaskFactory="CodeTaskFactory"
+			   AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+		<ParameterGroup>
+			<Candidates ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+			<SpecFile Output="true" />
+		</ParameterGroup>
+		<Task>
+			<Reference Include="Microsoft.Build.Framework"/>
+			<Using Namespace="System.Linq"/>
+			<Code Type="Fragment" Language="cs">
+				<![CDATA[
+if (this.Candidates == null || !this.Candidates.Any())
+{
+	Log.LogError("No files were assigned the NuSpec build action.");
+	return false;
+}
+
+this.SpecFile = this.Candidates.FirstOrDefault().GetMetadata("FullPath");
+Log.LogMessage("Found current nuspec file at {0}", this.SpecFile);
+]]>
+			</Code>
+		</Task>
+	</UsingTask>
+	<!--
+    ============================================================
+				BuildPaths
+
+    Builds up the NuGet paths we'll use for content and .nupkg
+    ============================================================
+    -->
+	<UsingTask TaskName="BuildPaths"
+			   TaskFactory="CodeTaskFactory"
+			   AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+		<ParameterGroup>
+			<CurrentDir Required="true" />
+			<OutputPath Required="true" />
+			<NuGetContentDir Output="true" />
+			<NuGetPackageDir Output="true" />
+		</ParameterGroup>
+		<Task>
+			<Using Namespace="System.IO"/>
+			<Code Type="Fragment" Language="cs">
+				<![CDATA[
+this.NuGetContentDir = Path.Combine(this.CurrentDir, this.OutputPath, "NuGet");
+this.NuGetPackageDir = Path.Combine(this.CurrentDir, this.OutputPath);
+if (this.NuGetPackageDir.EndsWith("\\"))
+	this.NuGetPackageDir = this.NuGetPackageDir.Substring(0, this.NuGetPackageDir.Length - 1);
+
+Log.LogMessage("NuGetContentDir: {0}", this.NuGetContentDir);
+Log.LogMessage("NuGetPackageDir: {0}", this.NuGetPackageDir);
+]]>
+			</Code>
+		</Task>
+	</UsingTask>
+	<!--
+    ============================================================
+				ReadCurrentVersion
+
+    Reads the current version of the .nuspec file, either from 
+	a previously generated one in the NuGet content output dir
+	or the project source itself on first build.
+    ============================================================
+    -->
+	<UsingTask TaskName="ReadCurrentVersion" 
+			   TaskFactory="CodeTaskFactory" 
+			   AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+		<ParameterGroup>
+			<Configuration Required="true" />
+			<SourceSpecFile Required="true" />
+			<TargetSpecFile Required="true" />
+			<CurrentVersion Output="true" />
+		</ParameterGroup>
+		<Task>
+			<Reference Include="System.Xml"/>
+			<Reference Include="System.Xml.Linq"/>
+			<Using Namespace="System.IO"/>
+			<Using Namespace="System.Xml"/>
+			<Using Namespace="System.Xml.Linq"/>
+			<Code Type="Fragment" Language="cs">
+				<![CDATA[
+var readTarget = (this.Configuration == "Debug" && File.Exists(this.TargetSpecFile));
+var fileToRead =  readTarget ? this.TargetSpecFile : this.SourceSpecFile;
+
+var spec = XDocument.Load(fileToRead);
+var ns = XNamespace.Get("http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd");
+this.CurrentVersion = spec.Root.Element(ns + "metadata").Element(ns + "version").Value;
+Log.LogMessage("Current nuspec version is {0}, from {1} (readTarget was calculated as '{2}').", this.CurrentVersion, fileToRead, readTarget);
+]]>
+			</Code>
+		</Task>
+	</UsingTask>
+	<UsingTask TaskName="WriteNewVersion"
+			   TaskFactory="CodeTaskFactory"
+			   AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll">
+		<ParameterGroup>
+			<SpecFile Required="true" />
+			<CurrentVersion Required="true" />
+		</ParameterGroup>
+		<Task>
+			<Reference Include="System.Xml"/>
+			<Reference Include="System.Xml.Linq"/>
+			<Using Namespace="System.IO"/>
+			<Using Namespace="System.Xml"/>
+			<Using Namespace="System.Xml.Linq"/>
+			<Code Type="Fragment" Language="cs">
+				<![CDATA[
+var spec = XDocument.Load(this.SpecFile);
+var ns = XNamespace.Get("http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd");
+var version = new Version(this.CurrentVersion);
+var updated = new Version(version.Major, version.Minor, version.Build, version.Revision + 1);
+
+spec.Root.Element(ns + "metadata").Element(ns + "version").Value = updated.ToString();
+spec.Save(this.SpecFile);
+Log.LogMessage("Updated nuspec version in file {0} to {1}.", this.SpecFile, updated);
+]]>
+</Code>
+</Task>
+</UsingTask>
+
+	<!--
+    ============================================================
+				NuSpec BuildAction/ItemName
+
+    The first file in the current project with this build action
+	will be considered the spec file for the output nuget.
+    ============================================================
+    -->
+	<ItemGroup>
+		<AvailableItemName Include="NuSpec" />
+	</ItemGroup>
+
+	<!--
+    ============================================================
+	Hooks up the $(CleanDependsOn) and $(BuildDependsOn) from C#
+    ============================================================
+    -->
+	<PropertyGroup>
+		<CleanDependsOn>NuGetBeforeBuild;$(CleanDependsOn);NuGetClean</CleanDependsOn>
+		<BuildDependsOn>NuGetBeforeBuild;NuGetClean;$(BuildDependsOn);NuGetContent;NuGetBuild;NuGetAfterBuild</BuildDependsOn>
+	</PropertyGroup>
+
+	<!--
+    ============================================================
+				NuGetBeforeBuild
+
+    Reads current version and calculates target nuspec file path
+    ============================================================
+    -->
+	<Target Name="NuGetBeforeBuild" Condition="'$(NuSpecCurrentVersion)' == ''">
+		<BuildPaths CurrentDir="$(MSBuildProjectDirectory)" OutputPath="$(OutputPath)">
+			<Output PropertyName="NuGetContentDir" TaskParameter="NuGetContentDir" />
+			<Output PropertyName="NuGetPackageDir" TaskParameter="NuGetPackageDir" />
+		</BuildPaths>
+		<FindSpecFile Candidates="@(NuSpec)">
+			<Output PropertyName="NuSpecSource" TaskParameter="SpecFile" />
+		</FindSpecFile>
+		<PropertyGroup>
+			<NuSpecTarget>$(NuGetContentDir)\$([System.IO.Path]::GetFileName('$(NuSpecSource)'))</NuSpecTarget>
+		</PropertyGroup>
+		<ReadCurrentVersion
+			Configuration="$(Configuration)"
+			SourceSpecFile="$(NuSpecSource)"
+			TargetSpecFile="$(NuSpecTarget)"
+			Condition="Exists('$(NuSpecSource)') or Exists('$(NuSpecTarget)')">
+			<Output PropertyName="NuSpecCurrentVersion" TaskParameter="CurrentVersion"/>
+		</ReadCurrentVersion>
+	</Target>
+
+	<!--
+    ============================================================
+				NuGetClean
+
+    Entirely removes the output path. This happens after we have
+	read the existing nuspec version, if any.
+    ============================================================
+    -->
+	<Target Name="NuGetClean">
+		<Exec Command="RmDir /S /Q $(OutputPath)" ContinueOnError="false" />
+	</Target>
+
+	<!--
+    ============================================================
+				NuGetContent
+
+    Adds any extra content in the current project that is under
+	the "content", tools and lib folders but which may not have 
+	the Content build action (avoids common user errors).
+    ============================================================
+    -->
+	<Target Name="NuGetContent">
+		<ItemGroup>
+			<T4Content Include="content\**\*.t4" />
+            <T4Content Include="content\**\*.tt" />
+            <!-- Bring in as content files everything in the content, tools and lib folders -->
+			<DynamicContent Include="content\**\*.*" Exclude="@(Content);@(T4Content)" />
+			<DynamicContent Include="tools\**\*.*" Exclude="@(Content)" />
+			<DynamicContent Include="lib\**\*.*" Exclude="@(Content)" />
+		</ItemGroup>
+		<AssignTargetPath Files="@(Content)" RootFolder="$(MSBuildProjectDirectory)">
+			<Output TaskParameter="AssignedFiles" ItemName="NuGetFiles" />
+		</AssignTargetPath>
+		<AssignTargetPath Files="@(DynamicContent)" RootFolder="$(MSBuildProjectDirectory)">
+			<Output TaskParameter="AssignedFiles" ItemName="NuGetFiles" />
+		</AssignTargetPath>
+		<AssignTargetPath Files="$(NuSpecSource)" RootFolder="$(MSBuildProjectDirectory)">
+			<Output TaskParameter="AssignedFiles" ItemName="NuGetFiles" />
+		</AssignTargetPath>
+		<!-- Tweak target path to be under NuGet -->
+		<CreateItem Include="@(NuGetFiles)"
+					AdditionalMetadata="TargetPath=NuGet\%(NuGetFiles.TargetPath)">
+			<Output ItemName="NuGetOutput" TaskParameter="Include" />
+		</CreateItem>
+		<Copy SourceFiles="@(NuGetOutput)" DestinationFiles="$(OutputPath)\%(TargetPath)" />
+	</Target>
+
+	<!--
+    ============================================================
+				NuGetBuild
+
+    Runs nuget.exe from the netfx root and generates the 
+	output .nupkg.
+    ============================================================
+    -->
+	<Target Name="NuGetBuild" Condition="Exists('$(NuSpecTarget)') and $(Configuration) == 'Release'">
+		<PropertyGroup>
+			<NuGetCommand>$(MSBuildThisFileDirectory)nuget.exe</NuGetCommand>
+		</PropertyGroup>
+
+		<WriteNewVersion SpecFile="$(NuSpecTarget)"
+						 CurrentVersion="$(NuSpecCurrentVersion)"
+						 Condition="$(Configuration) == 'Debug' and Exists('$(NuSpecTarget)')"/>
+
+		<Exec Command="&quot;$(NuGetCommand)&quot; Pack &quot;$(NuSpecTarget)&quot; -OutputDirectory &quot;$(NuGetPackageDir)&quot;" />
+	</Target>
+
+	<!--
+    ============================================================
+	NuGetAfterBuild: 
+	Redefine this target in your project in order to run tasks
+	just after the output .nupkg has been built.
+    ============================================================
+    -->
+	<Target Name="NuGetAfterBuild" />
+</Project>

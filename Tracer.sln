@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracer.Interfaces", "Tracer.Interfaces\Tracer.Interfaces.csproj", "{EFD24E29-A093-49E4-A1E2-770E39FCC39B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracer.Diagnostics", "Tracer.Diagnostics\Tracer.Diagnostics.csproj", "{3AFCD64A-029F-4842-A2E0-51D9EE380040}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracer.Log4Net", "Tracer.Log4Net\Tracer.Log4Net.csproj", "{B9D6F750-F0E3-4D4A-B3BD-80A517C7614E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3CBD7C4D-9EDC-483D-B973-990B74B2629A}"
+	ProjectSection(SolutionItems) = preProject
+		Common.ps1 = Common.ps1
+		Drop.ps1 = Drop.ps1
+		Push.ps1 = Push.ps1
+		README.md = README.md
+		Tracer.targets = Tracer.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracer.NLog", "Tracer.NLog\Tracer.NLog.csproj", "{11320BEC-B651-4849-A946-F04B8AE87A0B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracer.EntLib", "Tracer.EntLib\Tracer.EntLib.csproj", "{D159F0B7-DF31-4E73-BE9E-78634536A000}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracer.UnitTests", "Tracer.UnitTests\Tracer.UnitTests.csproj", "{837D4AB8-AE2F-498A-B519-95A1F692FEDD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EFD24E29-A093-49E4-A1E2-770E39FCC39B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFD24E29-A093-49E4-A1E2-770E39FCC39B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFD24E29-A093-49E4-A1E2-770E39FCC39B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFD24E29-A093-49E4-A1E2-770E39FCC39B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AFCD64A-029F-4842-A2E0-51D9EE380040}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AFCD64A-029F-4842-A2E0-51D9EE380040}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AFCD64A-029F-4842-A2E0-51D9EE380040}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AFCD64A-029F-4842-A2E0-51D9EE380040}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9D6F750-F0E3-4D4A-B3BD-80A517C7614E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9D6F750-F0E3-4D4A-B3BD-80A517C7614E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9D6F750-F0E3-4D4A-B3BD-80A517C7614E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9D6F750-F0E3-4D4A-B3BD-80A517C7614E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11320BEC-B651-4849-A946-F04B8AE87A0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11320BEC-B651-4849-A946-F04B8AE87A0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11320BEC-B651-4849-A946-F04B8AE87A0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11320BEC-B651-4849-A946-F04B8AE87A0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D159F0B7-DF31-4E73-BE9E-78634536A000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D159F0B7-DF31-4E73-BE9E-78634536A000}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D159F0B7-DF31-4E73-BE9E-78634536A000}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D159F0B7-DF31-4E73-BE9E-78634536A000}.Release|Any CPU.Build.0 = Release|Any CPU
+		{837D4AB8-AE2F-498A-B519-95A1F692FEDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{837D4AB8-AE2F-498A-B519-95A1F692FEDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{837D4AB8-AE2F-498A-B519-95A1F692FEDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{837D4AB8-AE2F-498A-B519-95A1F692FEDD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.2\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Logging.5.0.505.1\lib\NET35
+	EndGlobalSection
+EndGlobal
