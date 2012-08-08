@@ -38,8 +38,8 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="content\net35\Tracer\TracerManager.cs" />
-    <None Include="content\net40\Tracer\TracerManager.cs" />
+    <Compile Include="content\net35\System\Diagnostics\Tracer\TracerManager.cs" />
+    <None Include="content\net40\System\Diagnostics\Tracer\TracerManager.cs" />
     <Compile Include="netfx\System\AppDomainData.cs" />
     <Compile Include="netfx\System\Collections\Generic\DictionaryGetOrAdd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

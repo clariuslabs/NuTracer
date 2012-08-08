@@ -40,11 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="content\Tracer\ITracerManager.cs" />
-    <Compile Include="content\Tracer\ITracer.cs" />
-    <Compile Include="content\Tracer\ITracerExtensions.cs" />
-    <Compile Include="content\Tracer\Tracer.cs" />
-    <Compile Include="content\Tracer\Visibility.cs" />
+    <Compile Include="content\System\Diagnostics\Tracer\ITracerManager.cs" />
+    <Compile Include="content\System\Diagnostics\Tracer\ITracer.cs" />
+    <Compile Include="content\System\Diagnostics\Tracer\ITracerExtensions.cs" />
+    <Compile Include="content\System\Diagnostics\Tracer\Tracer.cs" />
+    <Compile Include="content\System\Diagnostics\Tracer\Visibility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test.cs" />
   </ItemGroup>

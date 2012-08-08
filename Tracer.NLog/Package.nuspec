@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Tracer.NLog</id>
-		<version>1.0.0.0</version>
+		<version>1.0.0.1</version>
 		<title>Tracer: NLog</title>
         <summary>NLog adapter for the general tracer interface.</summary>
 		<description>Implements the tracing interface with NLog.</description>

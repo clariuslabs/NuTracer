@@ -44,7 +44,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="content\Tracer\TracerManager.cs" />
+    <Compile Include="content\System\Diagnostics\Tracer\TracerManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

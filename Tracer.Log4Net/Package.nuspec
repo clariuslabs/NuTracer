@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Tracer.log4net</id>
-		<version>1.0.0.0</version>
+		<version>1.0.0.1</version>
 		<title>Tracer: log4net</title>
         <summary>Log4Net adapter for the general tracer interface.</summary>
 		<description>Implements the tracing interface with log4net.</description>
