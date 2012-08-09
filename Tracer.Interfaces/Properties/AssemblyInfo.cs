@@ -8,6 +8,6 @@ using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Tracer.UnitTests")]
 [assembly: InternalsVisibleTo("Tracer.Log4Net")]
-[assembly: InternalsVisibleTo("Tracer.Diagnostics")]
+[assembly: InternalsVisibleTo("Tracer.SystemDiagnostics")]
 [assembly: InternalsVisibleTo("Tracer.NLog")]
 [assembly: InternalsVisibleTo("Tracer.EntLib")]
