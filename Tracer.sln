@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracer.Interfaces", "Tracer.Interfaces\Tracer.Interfaces.csproj", "{EFD24E29-A093-49E4-A1E2-770E39FCC39B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracer.SystemDiagnostics", "Tracer.Diagnostics\Tracer.SystemDiagnostics.csproj", "{3AFCD64A-029F-4842-A2E0-51D9EE380040}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracer.SystemDiagnostics", "Tracer.SystemDiagnostics\Tracer.SystemDiagnostics.csproj", "{3AFCD64A-029F-4842-A2E0-51D9EE380040}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tracer.Log4Net", "Tracer.Log4Net\Tracer.Log4Net.csproj", "{B9D6F750-F0E3-4D4A-B3BD-80A517C7614E}"
 EndProject

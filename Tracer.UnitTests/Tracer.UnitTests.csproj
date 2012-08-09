@@ -49,7 +49,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Tracer.Diagnostics\Tracer.SystemDiagnostics.csproj">
+    <ProjectReference Include="..\Tracer.SystemDiagnostics\Tracer.SystemDiagnostics.csproj">
       <Project>{3AFCD64A-029F-4842-A2E0-51D9EE380040}</Project>
       <Name>Tracer.SystemDiagnostics</Name>
     </ProjectReference>
