@@ -54,6 +54,8 @@ namespace System.Diagnostics.UnitTests
             manager.AddListener("*", xml);
             manager.SetTracingLevel("*", SourceLevels.All);
 
+            var source = manager.GetSource("*");
+
             var tracer = Tracer.Get("Foo");
 
             using (tracer.StartActivity("Outer"))
@@ -67,6 +69,8 @@ namespace System.Diagnostics.UnitTests
             }
 
             xml.Flush();
+            xml.Flush();
+            System.Threading.Thread.Sleep(1000);
             xml.Close();
         }
 

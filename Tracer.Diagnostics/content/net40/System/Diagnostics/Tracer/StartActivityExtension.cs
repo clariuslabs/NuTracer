@@ -54,7 +54,7 @@ namespace System.Diagnostics
         /// In order for activity tracing to happen, the trace source needs to 
         /// have <see cref="SourceLevels.ActivityTracing"/> enabled.
         /// </devdoc>
-        [DebuggerStepThrough]
+        //[DebuggerStepThrough]
         private class TraceActivity : IDisposable
         {
             private string displayName;
@@ -83,10 +83,17 @@ namespace System.Diagnostics
                     tracer.Trace(TraceEventType.Transfer, this.newId);
 
                 Trace.CorrelationManager.ActivityId = newId;
+
                 if (this.args == null)
+                {
                     this.tracer.Trace(TraceEventType.Start, this.displayName);
+                    //Trace.CorrelationManager.StartLogicalOperation(this.displayName);
+                }
                 else
+                {
                     this.tracer.Trace(TraceEventType.Start, this.displayName, args);
+                    //Trace.CorrelationManager.StartLogicalOperation(string.Format(displayName, args));
+                }
             }
 
             public void Dispose()
@@ -101,6 +108,7 @@ namespace System.Diagnostics
                     if (this.oldId != Guid.Empty)
                         tracer.Trace(TraceEventType.Transfer, this.oldId);
 
+                    //Trace.CorrelationManager.StopLogicalOperation();
                     Trace.CorrelationManager.ActivityId = this.oldId;
                 }
 

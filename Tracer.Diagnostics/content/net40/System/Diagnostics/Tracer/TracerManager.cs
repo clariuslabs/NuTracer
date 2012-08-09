@@ -35,9 +35,9 @@ namespace System.Diagnostics
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Reflection;
 
     /// <summary>
     /// Implements the common tracer interface using <see cref="TraceSource"/> instances. 
@@ -55,7 +55,7 @@ namespace System.Diagnostics
         public const string DefaultSourceName = "*";
 
         // To handle concurrency for the async tracing.
-        private BlockingCollection<Action> traceQueue = new BlockingCollection<Action>();
+        private BlockingCollection<Tuple<ExecutionContext, Action>> traceQueue = new BlockingCollection<Tuple<ExecutionContext, Action>>();
         private CancellationTokenSource cancellation = new CancellationTokenSource();
 
         /// <summary>
@@ -74,9 +74,17 @@ namespace System.Diagnostics
         /// </summary>
         public ITracer Get(string name)
         {
-            return new AggregateTracer(name, CompositeFor(name)
-                .Select(tracerName => new DiagnosticsTracer(this,
+            return new AggregateTracer(this, name, CompositeFor(name)
+                .Select(tracerName => new DiagnosticsTracer(
                     this.GetOrAdd(tracerName, sourceName => new TraceSource(sourceName)))));
+        }
+
+        /// <summary>
+        /// Gets the underlying <see cref="TraceSource"/> for the given name.
+        /// </summary>
+        public TraceSource GetSource(string name)
+        {
+            return this.GetOrAdd(name, sourceName => new TraceSource(sourceName));
         }
 
         /// <summary>
@@ -127,7 +135,7 @@ namespace System.Diagnostics
         /// </summary>
         internal void Enqueue(Action traceAction)
         {
-            traceQueue.Add(traceAction);
+            traceQueue.Add(Tuple.Create(ExecutionContext.Capture(), traceAction));
         }
 
         private void DoTrace()
@@ -141,7 +149,7 @@ namespace System.Diagnostics
                 // Since this is async, it might if we don't catch.
                 try
                 {
-                    action();
+                    ExecutionContext.Run(action.Item1, state => action.Item2(), null);
                 }
                 catch { }
             }
@@ -216,11 +224,13 @@ namespace System.Diagnostics
         /// </summary>
         private class AggregateTracer : ITracer
         {
+            private TracerManager manager;
             private List<DiagnosticsTracer> tracers;
             private string name;
 
-            public AggregateTracer(string name, IEnumerable<DiagnosticsTracer> tracers)
+            public AggregateTracer(TracerManager manager, string name, IEnumerable<DiagnosticsTracer> tracers)
             {
+                this.manager = manager;
                 this.name = name;
                 this.tracers = tracers.ToList();
             }
@@ -230,7 +240,7 @@ namespace System.Diagnostics
             /// </summary>
             public void Trace(TraceEventType type, object message)
             {
-                tracers.ForEach(tracer => tracer.Trace(name, type, message));
+                manager.Enqueue(() => tracers.ForEach(tracer => tracer.Trace(name, type, message)));
             }
 
             /// <summary>
@@ -238,7 +248,7 @@ namespace System.Diagnostics
             /// </summary>
             public void Trace(TraceEventType type, string format, params object[] args)
             {
-                tracers.ForEach(tracer => tracer.Trace(name, type, format, args));
+                manager.Enqueue(() => tracers.ForEach(tracer => tracer.Trace(name, type, format, args)));
             }
 
             /// <summary>
@@ -246,7 +256,7 @@ namespace System.Diagnostics
             /// </summary>
             public void Trace(TraceEventType type, Exception exception, object message)
             {
-                tracers.ForEach(tracer => tracer.Trace(name, type, exception, message));
+                manager.Enqueue(() => tracers.ForEach(tracer => tracer.Trace(name, type, exception, message)));
             }
 
             /// <summary>
@@ -254,7 +264,7 @@ namespace System.Diagnostics
             /// </summary>
             public void Trace(TraceEventType type, Exception exception, string format, params object[] args)
             {
-                tracers.ForEach(tracer => tracer.Trace(name, type, exception, format, args));
+                manager.Enqueue(() => tracers.ForEach(tracer => tracer.Trace(name, type, exception, format, args)));
             }
 
             public override string ToString()
@@ -265,59 +275,45 @@ namespace System.Diagnostics
 
         partial class DiagnosticsTracer
         {
-            private TracerManager manager;
             private TraceSource source;
 
-            public DiagnosticsTracer(TracerManager manager, TraceSource source)
+            public DiagnosticsTracer(TraceSource source)
             {
-                this.manager = manager;
                 this.source = source;
             }
 
             public void Trace(string sourceName, TraceEventType type, object message)
             {
-                manager.Enqueue(() =>
+                // Because we know there is a single tracer thread executing these, 
+                // we know it's safe to replace the name without locking.
+                using (new SourceNameReplacer(source, sourceName))
                 {
-                    // Because we know there is a single tracer thread executing these, 
-                    // we know it's safe to replace the name without locking.
-                    using (new SourceNameReplacer(source, sourceName))
-                    {
-                        source.TraceEvent(type, 0, message.ToString());
-                    }
-                });
+                    source.TraceEvent(type, 0, message.ToString());
+                }
             }
 
             public void Trace(string sourceName, TraceEventType type, string format, params object[] args)
             {
-                manager.Enqueue(() =>
+                using (new SourceNameReplacer(source, sourceName))
                 {
-                    using (new SourceNameReplacer(source, sourceName))
-                    {
-                        source.TraceEvent(type, 0, format, args);
-                    }
-                });
+                    source.TraceEvent(type, 0, format, args);
+                }
             }
 
             public void Trace(string sourceName, TraceEventType type, Exception exception, object message)
             {
-                manager.Enqueue(() =>
+                using (new SourceNameReplacer(source, sourceName))
                 {
-                    using (new SourceNameReplacer(source, sourceName))
-                    {
-                        source.TraceEvent(type, 0, message.ToString() + Environment.NewLine + exception);
-                    }
-                });
+                    source.TraceEvent(type, 0, message.ToString() + Environment.NewLine + exception);
+                }
             }
 
             public void Trace(string sourceName, TraceEventType type, Exception exception, string format, params object[] args)
             {
-                manager.Enqueue(() =>
+                using (new SourceNameReplacer(source, sourceName))
                 {
-                    using (new SourceNameReplacer(source, sourceName))
-                    {
-                        source.TraceEvent(type, 0, string.Format(format, args) + Environment.NewLine + exception);
-                    }
-                });
+                    source.TraceEvent(type, 0, string.Format(format, args) + Environment.NewLine + exception);
+                }
             }
 
             /// <summary>

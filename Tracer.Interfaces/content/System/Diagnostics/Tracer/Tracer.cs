@@ -101,7 +101,7 @@ namespace System.Diagnostics
             return type.FullName;
         }
 
-        private class DefaultManager : ITracerManager
+        private partial class DefaultManager : ITracerManager
         {
             public ITracer Get(string name)
             {
