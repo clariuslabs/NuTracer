@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Tracer</id>
-		<version>1.0.0.2</version>
+		<version>1.0.0.3</version>
 		<title>Tracer: Interfaces</title>
         <summary>Provide extensive tracing capabilities in your components, without taking a dependency on a concrete logging/tracing implementation (such as log4net or System.Diagnostics).</summary>
 		<description>The interfaces provided by this package allow component authors to provide tracing statements that are agnostic to the actual implementation that will be used when they are used at runtime, which is an initialization concern that belongs to the application initialization or other bootstrapping/configuration code.</description>

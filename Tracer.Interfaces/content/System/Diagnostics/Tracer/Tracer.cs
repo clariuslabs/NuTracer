@@ -124,7 +124,7 @@ namespace System.Diagnostics
 
                 public void Trace(TraceEventType type, string format, params object[] args)
                 {
-                    Trace(type, string.Format(format, args));
+                    Trace(type, Format(format, args));
                 }
 
                 public void Trace(TraceEventType type, Exception exception, object message)
@@ -134,14 +134,23 @@ namespace System.Diagnostics
 
                 public void Trace(TraceEventType type, Exception exception, string format, params object[] args)
                 {
-                    Trace(type, string.Format(format, args) + Environment.NewLine + exception.ToString());
+                    Trace(type, Format(format, args) + Environment.NewLine + exception.ToString());
                 }
 
                 private void Trace(TraceEventType type, string message)
                 {
-                    System.Diagnostics.Debug.WriteLine(string.Format(
-                        "[{0}::{1}] {2}",
+                    System.Diagnostics.Debug.Write(string.Format(
+                        "[{0}::{1}] ",
                         this.name, type, message));
+                    System.Diagnostics.Debug.WriteLine(message);
+                }
+
+                private string Format(string format, object[] args)
+                {
+                    if (args != null && args.Length != 0)
+                        return string.Format(format, args);
+
+                    return format;
                 }
             }
         }
