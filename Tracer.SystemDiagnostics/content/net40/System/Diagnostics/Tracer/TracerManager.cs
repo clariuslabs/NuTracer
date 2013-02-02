@@ -38,6 +38,8 @@ namespace System.Diagnostics
     using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Configuration;
+    using System.Xml.Linq;
 
     /// <summary>
     /// Implements the common tracer interface using <see cref="TraceSource"/> instances. 
@@ -67,6 +69,25 @@ namespace System.Diagnostics
             // is an optimization, so that we don't consume too much resources
             // from the running app for this.
             Task.Factory.StartNew(DoTrace, cancellation.Token, TaskCreationOptions.LongRunning, TaskScheduler.Current);
+
+            InitializeConfiguredSources();
+        }
+
+        private void InitializeConfiguredSources()
+        {
+            var config = (ConfigurationSection)ConfigurationManager.GetSection("system.diagnostics");
+            var configFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+            var sourceNames = from diagnostics in XDocument.Load(configFile).Root.Elements("system.diagnostics")
+                              from sources in diagnostics.Elements("sources")
+                              from source in sources.Elements("source")
+                              select source.Attribute("name").Value;
+
+            foreach (var sourceName in sourceNames)
+            {
+                // Cause eager initialization, which is needed for the trace source configuration 
+                // to be properly read.
+                GetSource(sourceName);
+            }
         }
 
         /// <summary>
@@ -76,7 +97,7 @@ namespace System.Diagnostics
         {
             return new AggregateTracer(this, name, CompositeFor(name)
                 .Select(tracerName => new DiagnosticsTracer(
-                    this.GetOrAdd(tracerName, sourceName => new TraceSource(sourceName)))));
+                    this.GetOrAdd(tracerName, sourceName => CreateSource(sourceName)))));
         }
 
         /// <summary>
@@ -84,7 +105,7 @@ namespace System.Diagnostics
         /// </summary>
         public TraceSource GetSource(string name)
         {
-            return this.GetOrAdd(name, sourceName => new TraceSource(sourceName));
+            return this.GetOrAdd(name, sourceName => CreateSource(sourceName));
         }
 
         /// <summary>
@@ -92,7 +113,7 @@ namespace System.Diagnostics
         /// </summary>
         public void AddListener(string sourceName, TraceListener listener)
         {
-            this.GetOrAdd(sourceName, name => new TraceSource(name)).Listeners.Add(listener);
+            this.GetOrAdd(sourceName, name => CreateSource(name)).Listeners.Add(listener);
         }
 
         /// <summary>
@@ -100,7 +121,7 @@ namespace System.Diagnostics
         /// </summary>
         public void RemoveListener(string sourceName, TraceListener listener)
         {
-            this.GetOrAdd(sourceName, name => new TraceSource(name)).Listeners.Remove(listener);
+            this.GetOrAdd(sourceName, name => CreateSource(name)).Listeners.Remove(listener);
         }
 
         /// <summary>
@@ -108,7 +129,7 @@ namespace System.Diagnostics
         /// </summary>
         public void RemoveListener(string sourceName, string listenerName)
         {
-            this.GetOrAdd(sourceName, name => new TraceSource(name)).Listeners.Remove(listenerName);
+            this.GetOrAdd(sourceName, name => CreateSource(name)).Listeners.Remove(listenerName);
         }
 
         /// <summary>
@@ -116,7 +137,7 @@ namespace System.Diagnostics
         /// </summary>
         public void SetTracingLevel(string sourceName, SourceLevels level)
         {
-            this.GetOrAdd(sourceName, name => new TraceSource(name)).Switch.Level = level;
+            this.GetOrAdd(sourceName, name => CreateSource(name)).Switch.Level = level;
         }
 
         /// <summary>
@@ -136,6 +157,13 @@ namespace System.Diagnostics
         internal void Enqueue(Action traceAction)
         {
             traceQueue.Add(Tuple.Create(ExecutionContext.Capture(), traceAction));
+        }
+
+        private TraceSource CreateSource(string name)
+        {
+            var source = new TraceSource(name);
+            source.TraceInformation("Initialized with initial level {0}", source.Switch.Level);
+            return source;
         }
 
         private void DoTrace()

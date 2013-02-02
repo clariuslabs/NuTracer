@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Tracer.SystemDiagnostics</id>
-		<version>1.0.0.3</version>
+		<version>1.0.0.5</version>
 		<title>Tracer: System.Diagnostics</title>
         <summary>Adapter based on the System.Diagnostics classes for the general tracer interface.</summary>
         <description>Implements the tracing interface on top of the System.Diagnostics.TraceSource capabilities, extending it with log4net-style hierarchical logging and runtime dynamic configurability of trace sources.</description>
@@ -12,6 +12,11 @@
 		<licenseUrl>http://netfx.codeplex.com/license</licenseUrl>
 		<iconUrl>http://download.codeplex.com/Project/Download/FileDownload.aspx?ProjectName=netfx&amp;DownloadId=199201</iconUrl>
 		<tags>netfx diagnostics tracing</tags>
+        <frameworkAssemblies>
+            <frameworkAssembly assemblyName="System.Configuration" targetFramework="net40"/>
+            <frameworkAssembly assemblyName="System.Xml" targetFramework="net40"/>
+            <frameworkAssembly assemblyName="System.Xml.Linq" targetFramework="net40"/>
+        </frameworkAssemblies>
 		<dependencies>
             <dependency id="netfx-System.AppDomainData" version="1.1" />
             <dependency id="netfx-System.Collections.Generic.DictionaryGetOrAdd" version="1.1" />

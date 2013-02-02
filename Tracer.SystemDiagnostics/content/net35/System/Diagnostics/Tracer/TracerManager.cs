@@ -55,7 +55,7 @@ namespace System.Diagnostics
         {
             return new AggregateTracer(name, CompositeFor(name)
                 .Select(tracerName => new DiagnosticsTracer(
-                    this.GetOrAdd(tracerName, sourceName => new TraceSource(sourceName)))));
+                    this.GetOrAdd(tracerName, sourceName => CreateSource(sourceName)))));
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace System.Diagnostics
         /// </summary>
         public void AddListener(string sourceName, TraceListener listener)
         {
-            this.GetOrAdd(sourceName, name => new TraceSource(name)).Listeners.Add(listener);
+            this.GetOrAdd(sourceName, name => CreateSource(name)).Listeners.Add(listener);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace System.Diagnostics
         /// </summary>
         public void RemoveListener(string sourceName, TraceListener listener)
         {
-            this.GetOrAdd(sourceName, name => new TraceSource(name)).Listeners.Remove(listener);
+            this.GetOrAdd(sourceName, name => CreateSource(name)).Listeners.Remove(listener);
         }
 
         /// <summary>
@@ -79,7 +79,7 @@ namespace System.Diagnostics
         /// </summary>
         public void RemoveListener(string sourceName, string listenerName)
         {
-            this.GetOrAdd(sourceName, name => new TraceSource(name)).Listeners.Remove(listenerName);
+            this.GetOrAdd(sourceName, name => CreateSource(name)).Listeners.Remove(listenerName);
         }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace System.Diagnostics
         /// </summary>
         public void SetTracingLevel(string sourceName, SourceLevels level)
         {
-            this.GetOrAdd(sourceName, name => new TraceSource(name)).Switch.Level = level;
+            this.GetOrAdd(sourceName, name => CreateSource(name)).Switch.Level = level;
         }
 
         /// <summary>
@@ -95,6 +95,13 @@ namespace System.Diagnostics
         /// </summary>
         public void Dispose()
         {
+        }
+
+        private TraceSource CreateSource(string name)
+        {
+            var source = new TraceSource(name);
+            source.TraceInformation("Initialized trace source {0} with initial level {1}", name, source.Switch.Level);
+            return source;
         }
 
         /// <summary>
