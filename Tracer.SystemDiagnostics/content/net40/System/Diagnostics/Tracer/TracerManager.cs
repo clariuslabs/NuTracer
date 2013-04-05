@@ -40,6 +40,7 @@ namespace System.Diagnostics
     using System.Threading.Tasks;
     using System.Configuration;
     using System.Xml.Linq;
+    using System.IO;
 
     /// <summary>
     /// Implements the common tracer interface using <see cref="TraceSource"/> instances. 
@@ -77,6 +78,9 @@ namespace System.Diagnostics
         {
             var config = (ConfigurationSection)ConfigurationManager.GetSection("system.diagnostics");
             var configFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
+            if (!File.Exists(configFile))
+                return;
+
             var sourceNames = from diagnostics in XDocument.Load(configFile).Root.Elements("system.diagnostics")
                               from sources in diagnostics.Elements("sources")
                               from source in sources.Elements("source")
