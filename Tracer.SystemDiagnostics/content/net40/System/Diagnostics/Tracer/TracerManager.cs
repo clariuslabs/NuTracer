@@ -76,7 +76,6 @@ namespace System.Diagnostics
 
         private void InitializeConfiguredSources()
         {
-            var config = (ConfigurationSection)ConfigurationManager.GetSection("system.diagnostics");
             var configFile = AppDomain.CurrentDomain.SetupInformation.ConfigurationFile;
             if (!File.Exists(configFile))
                 return;
