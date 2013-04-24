@@ -43,3 +43,5 @@ Your bootstrapper or application startup code will take a dependency on a concre
 `Tracer.Initialize(new TracerManager());`
 
 And that would be all!
+
+All source code will be in your own project namespaces, and made internal by default. It's up to you to make it public or not!

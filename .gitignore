@@ -9,3 +9,6 @@ Drop
 /apikey.txt
 *.suo
 *.user
+/Tracer.EntLib/*.t4properties
+
+/Tracer.Interfaces/*.t4properties

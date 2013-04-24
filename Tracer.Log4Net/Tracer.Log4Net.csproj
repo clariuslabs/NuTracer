@@ -44,7 +44,14 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="content\System\Diagnostics\Tracer\TracerManager.cs" />
+    <Content Include="content\Diagnostics\Tracer\TracerManager.cs.pp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Compile Include="content\Diagnostics\Tracer\TracerManager.cs">
+      <DependentUpon>TracerManager.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -60,7 +67,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="content\Diagnostics\Tracer\TracerManager.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TracerManager.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\Tracer.targets" />

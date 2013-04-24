@@ -41,10 +41,42 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="content\net35\System\Diagnostics\Tracer\StartActivityExtension.cs" />
-    <None Include="content\net35\System\Diagnostics\Tracer\TracerManager.cs" />
-    <Compile Include="content\net40\System\Diagnostics\Tracer\TracerManager.cs" />
-    <Compile Include="content\net40\System\Diagnostics\Tracer\StartActivityExtension.cs" />
+    <None Include="content\net35\Diagnostics\Tracer\StartActivityExtension.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StartActivityExtension.cs</LastGenOutput>
+    </None>
+    <Content Include="content\net35\Diagnostics\Tracer\StartActivityExtension.cs.pp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="content\net35\Diagnostics\Tracer\TracerManager.cs.pp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="content\net35\Diagnostics\Tracer\StartActivityExtension.cs">
+      <DependentUpon>StartActivityExtension.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </None>
+    <None Include="content\net35\Diagnostics\Tracer\TracerManager.cs">
+      <DependentUpon>TracerManager.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </None>
+    <Content Include="content\net40\Diagnostics\Tracer\TracerManager.cs.pp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="content\net40\Diagnostics\Tracer\StartActivityExtension.cs.pp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Compile Include="content\net40\Diagnostics\Tracer\StartActivityExtension.cs">
+      <DependentUpon>StartActivityExtension.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="content\net40\Diagnostics\Tracer\TracerManager.cs">
+      <DependentUpon>TracerManager.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="netfx\System\AppDomainData.cs" />
     <Compile Include="netfx\System\Collections\Generic\DictionaryGetOrAdd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -62,9 +94,23 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="content\net35\Diagnostics\Tracer\TracerManager.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TracerManager.cs</LastGenOutput>
+    </None>
+    <None Include="content\net40\Diagnostics\Tracer\StartActivityExtension.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StartActivityExtension.cs</LastGenOutput>
+    </None>
+    <None Include="content\net40\Diagnostics\Tracer\TracerManager.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TracerManager.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\Tracer.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

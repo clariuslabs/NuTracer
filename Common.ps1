@@ -66,7 +66,7 @@ function Build-Packages
 			&$msbuild /target:Clean /verbosity:quiet /p:Configuration=Release | out-null
 
 			Write-Progress -Activity "Building" -Status ("Building " + $build.Name) -PercentComplete $progress
-			&$msbuild /verbosity:quiet /p:Configuration=Release /nologo
+			&$msbuild /verbosity:minimal /p:Configuration=Release /nologo
 		
 		popd
 	}

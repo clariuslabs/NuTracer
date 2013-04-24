@@ -201,9 +201,9 @@ Log.LogMessage("Updated nuspec version in file {0} to {1}.", this.SpecFile, upda
 	<Target Name="NuGetContent">
 		<ItemGroup>
 			<T4Content Include="content\**\*.t4" />
-            <T4Content Include="content\**\*.tt" />
-            <!-- Bring in as content files everything in the content, tools and lib folders -->
-			<DynamicContent Include="content\**\*.*" Exclude="@(Content);@(T4Content)" />
+      <T4Content Include="content\**\*.tt" />
+      <!-- Bring in as content files everything in the content, tools and lib folders -->
+			<DynamicContent Include="content\**\*.*" Exclude="@(Content);@(T4Content)" Condition="False" />
 			<DynamicContent Include="tools\**\*.*" Exclude="@(Content)" />
 			<DynamicContent Include="lib\**\*.*" Exclude="@(Content)" />
 		</ItemGroup>
