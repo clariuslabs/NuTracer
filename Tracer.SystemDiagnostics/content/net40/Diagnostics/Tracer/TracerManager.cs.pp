@@ -189,7 +189,7 @@ namespace $rootnamespace$.Diagnostics
         }
 
         /// <summary>
-        /// Gets the list of trace source names that are used to inherit trace source logging for the given <paramref name="type"/>.
+        /// Gets the list of trace source names that are used to inherit trace source logging for the given <paramref name="name"/>.
         /// </summary>
         private static IEnumerable<string> CompositeFor(string name)
         {
