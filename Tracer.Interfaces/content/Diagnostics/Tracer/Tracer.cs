@@ -32,6 +32,8 @@ DAMAGE.
 
 namespace System.Diagnostics
 {
+    using System;
+    using System.Diagnostics;
     using System.Linq;
 
     /// <summary>
@@ -48,7 +50,7 @@ namespace System.Diagnostics
         /// </summary>
         static Tracer()
         {
-            manager = new DefaultManager();
+			manager = new DefaultManager();
         }
 
         /// <summary>

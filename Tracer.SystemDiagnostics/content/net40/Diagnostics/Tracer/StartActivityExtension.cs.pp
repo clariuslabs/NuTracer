@@ -35,6 +35,9 @@ namespace $rootnamespace$.Diagnostics
     using System;
     using System.Diagnostics;
 
+    /// <summary>
+    /// Extensions to <see cref="ITracer"/> for activity tracing.
+    /// </summary>
     static partial class StartActivityExtension
     {
         /// <summary>

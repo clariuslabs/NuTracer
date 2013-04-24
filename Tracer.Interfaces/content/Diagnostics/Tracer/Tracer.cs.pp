@@ -50,7 +50,7 @@ namespace $rootnamespace$.Diagnostics
         /// </summary>
         static Tracer()
         {
-            manager = new DefaultManager();
+			manager = new DefaultManager();
         }
 
         /// <summary>
