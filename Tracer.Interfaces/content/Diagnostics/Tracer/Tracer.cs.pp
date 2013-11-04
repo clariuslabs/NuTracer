@@ -85,10 +85,19 @@ namespace $rootnamespace$.Diagnostics
             return manager.Get(name);
         }
 
+
         /// <summary>
-        /// Gets the simple C#-friendly tracer name for the given type.
+        /// Gets the tracer name for the given type.
         /// </summary>
-        private static string NameFor(Type type)
+        public static string NameFor<T>()
+        {
+            return NameFor(typeof(T));
+        }
+
+        /// <summary>
+        /// Gets the tracer name for the given type.
+        /// </summary>
+        public static string NameFor(Type type)
         {
             if (type.IsGenericType)
             {
