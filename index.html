@@ -70,8 +70,7 @@
 
 <p>As elaborated in the <a href="http://kzu.to/PEgB3o" title="Tracer: the unified, dead-simple API for all logging frameworks in existence">introductory blog post</a>, it's not worth it to introduce a binary dependency for something that is really extremely simple (just 3 types). So you install via <a href="http://nuget.org/">nuget</a> the main interfaces in your "Common" or "Core" project which is shared by the components that will do the logging, by using:</p>
 
-<pre><code>install-package tracer
-</code></pre>
+<p><code>install-package tracer</code></p>
 
 <p>and then use the following code to retrieve a tracer and log to it:</p>
 
@@ -89,10 +88,13 @@
 
 <p>Your bootstrapper or application startup code will take a dependency on a concrete adapter implementation mentioned in the Where section, and initialize the Tracer with the following line:</p>
 
-<pre><code>Tracer.Initialize(new TracerManager());
-</code></pre>
+<p><code>Tracer.Initialize(new TracerManager());</code></p>
 
 <p>And that would be all!</p>
+
+<p>All source code will be in your own project namespaces, and made internal by default. It's up to you to make it public or not!</p>
+
+<p>You can read more about Tracer in the <a href="https://github.com/clariuslabs/tracer/wiki">Wiki</a>.</p>
       </section>
 
     </div>
