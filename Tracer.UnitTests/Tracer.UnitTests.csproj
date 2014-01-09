@@ -44,8 +44,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="content\Diagnostics\DiagnosticsTracerSpec.cs" />
-    <Compile Include="content\Diagnostics\Speed.cs" />
+    <Compile Include="content\External\Diagnostics\DiagnosticsTracerSpec.cs" />
+    <Compile Include="content\External\Diagnostics\Speed.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

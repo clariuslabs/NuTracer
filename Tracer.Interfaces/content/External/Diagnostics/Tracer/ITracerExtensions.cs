@@ -32,6 +32,9 @@ DAMAGE.
 
 namespace System.Diagnostics
 {
+    using System;
+    using System.Diagnostics;
+
     /// <summary>
     /// Provides usability overloads for tracing to a <see cref="ITracer"/>.
     /// </summary>

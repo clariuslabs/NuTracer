@@ -36,66 +36,66 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="content\Diagnostics\Tracer\Visibility.tt">
+    <None Include="content\External\Diagnostics\Tracer\Visibility.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Visibility.cs</LastGenOutput>
     </None>
-    <None Include="content\Diagnostics\Tracer\Tracer.tt">
+    <None Include="content\External\Diagnostics\Tracer\Tracer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Tracer.cs</LastGenOutput>
     </None>
-    <None Include="content\Diagnostics\Tracer\ITracerManager.tt">
+    <None Include="content\External\Diagnostics\Tracer\ITracerManager.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ITracerManager.cs</LastGenOutput>
     </None>
-    <None Include="content\Diagnostics\Tracer\ITracerExtensions.tt">
+    <None Include="content\External\Diagnostics\Tracer\ITracerExtensions.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ITracerExtensions.cs</LastGenOutput>
     </None>
-    <Content Include="content\Diagnostics\Tracer\ITracerManager.cs.pp">
+    <Content Include="content\External\Diagnostics\Tracer\ITracerManager.cs.pp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="content\Diagnostics\Tracer\ITracer.cs.pp">
+    <Content Include="content\External\Diagnostics\Tracer\ITracer.cs.pp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="content\Diagnostics\Tracer\ITracerExtensions.cs.pp">
+    <Content Include="content\External\Diagnostics\Tracer\ITracerExtensions.cs.pp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="content\Diagnostics\Tracer\Tracer.cs.pp">
+    <Content Include="content\External\Diagnostics\Tracer\Tracer.cs.pp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Compile Include="content\Diagnostics\Tracer\Visibility.cs">
+    <Compile Include="content\External\Diagnostics\Tracer\Visibility.cs">
       <DependentUpon>Visibility.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="content\Diagnostics\Tracer\Tracer.cs">
+    <Compile Include="content\External\Diagnostics\Tracer\Tracer.cs">
       <DependentUpon>Tracer.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="content\Diagnostics\Tracer\ITracerManager.cs">
+    <Compile Include="content\External\Diagnostics\Tracer\ITracerManager.cs">
       <DependentUpon>ITracerManager.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="content\Diagnostics\Tracer\ITracerExtensions.cs">
+    <Compile Include="content\External\Diagnostics\Tracer\ITracerExtensions.cs">
       <DependentUpon>ITracerExtensions.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="content\Diagnostics\Tracer\ITracer.cs">
+    <Compile Include="content\External\Diagnostics\Tracer\ITracer.cs">
       <DependentUpon>ITracer.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Content Include="content\Diagnostics\Tracer\Visibility.cs.pp">
+    <Content Include="content\External\Diagnostics\Tracer\Visibility.cs.pp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="content\Diagnostics\Tracer\ITracer.tt">
+    <None Include="content\External\Diagnostics\Tracer\ITracer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ITracer.cs</LastGenOutput>
     </None>

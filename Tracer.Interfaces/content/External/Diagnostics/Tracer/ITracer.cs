@@ -32,6 +32,9 @@ DAMAGE.
 
 namespace System.Diagnostics
 {
+    using System;
+    using System.Diagnostics;
+
     /// <summary>
     /// Interface used by the application components to log messages.
     /// </summary>

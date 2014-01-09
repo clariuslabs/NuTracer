@@ -42,16 +42,7 @@ namespace System.Diagnostics
     ///	<nuget id="Tracer.Interfaces" />
     static partial class Tracer
     {
-        private static ITracerManager manager;
-
-        /// <summary>
-        /// Initializes the <see cref="Tracer"/> class by specifying the 
-        /// diagnostics tracer as the default implementation.
-        /// </summary>
-        static Tracer()
-        {
-			manager = new DefaultManager();
-        }
+        private static ITracerManager manager = new DefaultManager();
 
         /// <summary>
         /// Provides the implementation for managing tracers.
@@ -85,10 +76,19 @@ namespace System.Diagnostics
             return manager.Get(name);
         }
 
+
         /// <summary>
-        /// Gets the simple C#-friendly tracer name for the given type.
+        /// Gets the tracer name for the given type.
         /// </summary>
-        private static string NameFor(Type type)
+        public static string NameFor<T>()
+        {
+            return NameFor(typeof(T));
+        }
+
+        /// <summary>
+        /// Gets the tracer name for the given type.
+        /// </summary>
+        public static string NameFor(Type type)
         {
             if (type.IsGenericType)
             {

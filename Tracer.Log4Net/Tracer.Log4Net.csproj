@@ -44,10 +44,10 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="content\Diagnostics\Tracer\TracerManager.cs.pp">
+    <Content Include="content\External\Diagnostics\Tracer\Log4Net\TracerManager.cs.pp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Compile Include="content\Diagnostics\Tracer\TracerManager.cs">
+    <Compile Include="content\External\Diagnostics\Tracer\Log4Net\TracerManager.cs">
       <DependentUpon>TracerManager.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -67,7 +67,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="content\Diagnostics\Tracer\TracerManager.tt">
+    <None Include="content\External\Diagnostics\Tracer\Log4Net\TracerManager.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>TracerManager.cs</LastGenOutput>
     </None>

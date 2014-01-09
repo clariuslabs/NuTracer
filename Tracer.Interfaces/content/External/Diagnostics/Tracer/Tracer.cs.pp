@@ -42,16 +42,7 @@ namespace $rootnamespace$.Diagnostics
     ///	<nuget id="Tracer.Interfaces" />
     static partial class Tracer
     {
-        private static ITracerManager manager;
-
-        /// <summary>
-        /// Initializes the <see cref="Tracer"/> class by specifying the 
-        /// diagnostics tracer as the default implementation.
-        /// </summary>
-        static Tracer()
-        {
-			manager = new DefaultManager();
-        }
+        private static ITracerManager manager = new DefaultManager();
 
         /// <summary>
         /// Provides the implementation for managing tracers.

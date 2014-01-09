@@ -32,6 +32,8 @@ DAMAGE.
 
 namespace System.Diagnostics
 {
+    using System;
+    using System.Diagnostics;
     using Microsoft.Practices.EnterpriseLibrary.Logging;
 
     /// <summary>

@@ -60,10 +60,10 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="content\Diagnostics\Tracer\TracerManager.cs.pp">
+    <None Include="content\External\Diagnostics\Tracer\EntLib\TracerManager.cs.pp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Compile Include="content\Diagnostics\Tracer\TracerManager.cs">
+    <Compile Include="content\External\Diagnostics\Tracer\EntLib\TracerManager.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>TracerManager.tt</DependentUpon>
@@ -86,7 +86,7 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="content\Diagnostics\Tracer\TracerManager.tt">
+    <None Include="content\External\Diagnostics\Tracer\EntLib\TracerManager.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>TracerManager.cs</LastGenOutput>
     </None>

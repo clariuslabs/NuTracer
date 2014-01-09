@@ -1,19 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-	<metadata>
-		<id>Tracer.log4net</id>
-		<version>1.1.0</version>
-		<title>Tracer: log4net</title>
+    <metadata>
+        <id>Tracer.log4net</id>
+        <version>1.1.7</version>
+        <title>Tracer: log4net</title>
         <summary>Log4Net adapter for the general tracer interface.</summary>
-		<description>Implements the tracing interface with log4net.</description>
-		<authors>Daniel Cazzulino, kzu, Clarius</authors>
-		<language>en-US</language>
-		<projectUrl>http://netfx.codeplex.com</projectUrl>
-		<licenseUrl>http://netfx.codeplex.com/license</licenseUrl>
-		<iconUrl>http://download.codeplex.com/Project/Download/FileDownload.aspx?ProjectName=netfx&amp;DownloadId=199201</iconUrl>
-		<tags>netfx diagnostics tracing</tags>
-		<dependencies>
-			<dependency id="log4net" version="2.0" />
+        <description>Implements the tracing interface with log4net.</description>
+        <authors>Daniel Cazzulino, kzu, Clarius</authors>
+        <language>en-US</language>
+        <projectUrl>http://netfx.codeplex.com</projectUrl>
+        <licenseUrl>http://netfx.codeplex.com/license</licenseUrl>
+        <iconUrl>http://download.codeplex.com/Project/Download/FileDownload.aspx?ProjectName=netfx&amp;DownloadId=199201</iconUrl>
+        <tags>netfx diagnostics tracing</tags>
+        <dependencies>
+            <dependency id="log4net" version="2.0" />
         </dependencies>
-	</metadata>
+        <releaseNotes>
+            Version 1.1.7
+            * Unified content location with the other Tracer implementations
+        </releaseNotes>
+    </metadata>
 </package>

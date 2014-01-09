@@ -1,10 +1,14 @@
 ﻿using Moq;
 using Xunit;
+using System.IO;
 
 namespace System.Diagnostics.UnitTests
 {
     public class DiagnosticsTracerSpec
     {
+        const string SvcViewer = @"C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bin\NETFX 4.0 Tools\SvcTraceViewer.exe";
+        const string LogFile = "log.xml";
+
         private TracerManager manager = new TracerManager();
 
         public DiagnosticsTracerSpec()
@@ -49,7 +53,10 @@ namespace System.Diagnostics.UnitTests
         [Fact]
         public void when_tracing_activity_then_builds_trace_log()
         {
-            var xml = new XmlWriterTraceListener(@"C:\Delete\log.svclog", "Xml");
+            if (File.Exists(LogFile))
+                File.Delete(LogFile);
+
+            var xml = new XmlWriterTraceListener(LogFile, "Xml");
 
             manager.AddListener("*", xml);
             manager.SetTracingLevel("*", SourceLevels.All);
@@ -67,10 +74,38 @@ namespace System.Diagnostics.UnitTests
             }
 
             xml.Flush();
-            xml.Flush();
             System.Threading.Thread.Sleep(1000);
             xml.Close();
+
+            Process.Start(SvcViewer, new FileInfo(LogFile).FullName);
         }
 
+        [Fact]
+        public void when_tracing_activity_then_can_render_activity_as_string()
+        {
+            var writer = new StringWriter();
+            var text = new TextWriterTraceListener(writer);
+
+            manager.AddListener("*", text);
+            manager.SetTracingLevel("*", SourceLevels.All);
+
+            var tracer = Tracer.Get("Foo");
+
+            using (tracer.StartActivity("Outer"))
+            {
+                tracer.Info("Hello info from outer");
+                using (tracer.StartActivity("Inner"))
+                {
+                    tracer.Warn("Warn from inner");
+                    Tracer.Get("Foo.Bar").Error("Something failed on another class!");
+                }
+            }
+
+            System.Threading.Thread.Sleep(1000);
+
+            text.Flush();
+
+            Console.WriteLine(writer.ToString());
+        }
     }
 }
