@@ -36,69 +36,62 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="content\External\Diagnostics\Tracer\Visibility.cs" />
+    <None Include="content\External\Diagnostics\Tracer\Tracer.cs.pp">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Tracer.tt</DependentUpon>
+    </None>
+    <None Include="content\External\Diagnostics\Tracer\BuildContent.ttinclude" />
     <None Include="content\External\Diagnostics\Tracer\Visibility.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Visibility.cs</LastGenOutput>
+      <LastGenOutput>Visibility.cs.pp</LastGenOutput>
     </None>
+    <Content Include="content\External\Diagnostics\Tracer\Visibility.cs.pp">
+      <DependentUpon>Visibility.tt</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Content>
+    <Compile Include="content\External\Diagnostics\Tracer\Tracer.cs" />
     <None Include="content\External\Diagnostics\Tracer\Tracer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Tracer.cs</LastGenOutput>
+      <LastGenOutput>Tracer.cs.pp</LastGenOutput>
     </None>
+    <Compile Include="content\External\Diagnostics\Tracer\ITracerManager.cs" />
     <None Include="content\External\Diagnostics\Tracer\ITracerManager.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ITracerManager.cs</LastGenOutput>
-    </None>
-    <None Include="content\External\Diagnostics\Tracer\ITracerExtensions.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ITracerExtensions.cs</LastGenOutput>
+      <LastGenOutput>ITracerManager.cs.pp</LastGenOutput>
     </None>
     <Content Include="content\External\Diagnostics\Tracer\ITracerManager.cs.pp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="content\External\Diagnostics\Tracer\ITracer.cs.pp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="content\External\Diagnostics\Tracer\ITracerExtensions.cs.pp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="content\External\Diagnostics\Tracer\Tracer.cs.pp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Compile Include="content\External\Diagnostics\Tracer\Visibility.cs">
-      <DependentUpon>Visibility.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="content\External\Diagnostics\Tracer\Tracer.cs">
-      <DependentUpon>Tracer.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="content\External\Diagnostics\Tracer\ITracerManager.cs">
       <DependentUpon>ITracerManager.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="content\External\Diagnostics\Tracer\ITracerExtensions.cs">
-      <DependentUpon>ITracerExtensions.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="content\External\Diagnostics\Tracer\ITracer.cs">
-      <DependentUpon>ITracer.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Content Include="content\External\Diagnostics\Tracer\Visibility.cs.pp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
     </Content>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="content\External\Diagnostics\Tracer\ITracerExtensions.cs" />
+    <None Include="content\External\Diagnostics\Tracer\ITracerExtensions.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ITracerExtensions.cs.pp</LastGenOutput>
+    </None>
+    <Content Include="content\External\Diagnostics\Tracer\ITracerExtensions.cs.pp">
+      <DependentUpon>ITracerExtensions.tt</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Content>
+    <Compile Include="content\External\Diagnostics\Tracer\ITracer.cs" />
     <None Include="content\External\Diagnostics\Tracer\ITracer.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ITracer.cs</LastGenOutput>
+      <LastGenOutput>ITracer.cs.pp</LastGenOutput>
     </None>
+    <Content Include="content\External\Diagnostics\Tracer\ITracer.cs.pp">
+      <DependentUpon>ITracer.tt</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Content>
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <NuSpec Include="Package.nuspec">

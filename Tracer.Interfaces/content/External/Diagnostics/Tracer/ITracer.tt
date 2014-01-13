@@ -1,4 +1,1 @@
-﻿<#@ template debug="false" hostspecific="true" language="C#" #>
-<#@ output extension=".cs" #>
-<#@ import namespace="System.IO" #>
-<#= File.ReadAllText(Path.ChangeExtension(this.Host.TemplateFile, ".cs.pp")).Replace("$rootnamespace$", "System") #>
+﻿<#@ include file="BuildContent.ttinclude" #>

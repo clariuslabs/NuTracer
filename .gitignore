@@ -12,3 +12,7 @@ Drop
 /Tracer.EntLib/*.t4properties
 
 /Tracer.Interfaces/*.t4properties
+
+/Tracer.Log4Net/*.t4properties
+
+/Tracer.SystemDiagnostics/*.t4properties

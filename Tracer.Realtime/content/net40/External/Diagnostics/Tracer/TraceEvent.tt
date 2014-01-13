@@ -1,4 +1,0 @@
-﻿<#@ template debug="false" hostspecific="true" language="C#" #>
-<#@ output extension=".cs.pp" #>
-<#@ import namespace="System.IO" #>
-<#= File.ReadAllText(Path.ChangeExtension(this.Host.TemplateFile, ".cs")).Replace("namespace Realtime", "namespace $rootnamespace$") #>

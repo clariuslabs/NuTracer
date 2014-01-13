@@ -30,7 +30,7 @@ DAMAGE.
 */
 #endregion
 
-namespace System.Diagnostics
+namespace Tracing
 {
     /// <summary>
     /// Manages <see cref="ITracer"/> instances. Provides the implementation 

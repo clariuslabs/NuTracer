@@ -30,7 +30,7 @@ DAMAGE.
 */
 #endregion
 
-namespace $rootnamespace$
+namespace $rootnamespace$.Diagnostics
 {
     using Microsoft.AspNet.SignalR.Client;
     using System;

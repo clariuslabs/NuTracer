@@ -30,7 +30,7 @@ DAMAGE.
 */
 #endregion
 
-namespace System.Diagnostics
+namespace Tracing.Log4Net
 {
     using System;
     using System.Diagnostics;

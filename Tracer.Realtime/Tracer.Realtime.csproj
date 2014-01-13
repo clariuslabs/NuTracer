@@ -41,19 +41,10 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="content\net40\External\Diagnostics\Tracer\RealtimeTraceListener.cs" />
-    <Compile Include="content\net40\External\Diagnostics\Tracer\TraceEvent.cs" />
-    <Compile Include="External\Diagnostics\Tracer\ITracer.cs" />
-    <Compile Include="External\Diagnostics\Tracer\ITracerExtensions.cs" />
-    <Compile Include="External\Diagnostics\Tracer\ITracerManager.cs" />
-    <Compile Include="External\Diagnostics\Tracer\Tracer.cs" />
-    <Compile Include="External\Diagnostics\Tracer\Visibility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -65,16 +56,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>RealtimeTraceListener.cs.pp</LastGenOutput>
     </None>
-    <None Include="content\net40\External\Diagnostics\Tracer\TraceEvent.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>TraceEvent.cs.pp</LastGenOutput>
-    </None>
-    <Content Include="content\net40\External\Diagnostics\Tracer\TraceEvent.cs.pp">
-      <DependentUpon>TraceEvent.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="content\net40\External\Diagnostics\Tracer\RealtimeTraceListener.cs.pp">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

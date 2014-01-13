@@ -30,7 +30,7 @@ DAMAGE.
 */
 #endregion
 
-namespace $rootnamespace$.Diagnostics
+namespace Tracing.EntLib
 {
     using System;
     using System.Collections.Generic;

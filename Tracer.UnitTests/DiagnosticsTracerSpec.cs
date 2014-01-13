@@ -1,6 +1,8 @@
 ﻿using Moq;
 using Xunit;
 using System.IO;
+using Interfaces;
+using SystemDiagnostics;
 
 namespace System.Diagnostics.UnitTests
 {

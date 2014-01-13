@@ -41,42 +41,50 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="content\net35\External\Diagnostics\Tracer\SystemDiagnostics\StartActivityExtension.cs" />
     <None Include="content\net35\External\Diagnostics\Tracer\SystemDiagnostics\StartActivityExtension.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>StartActivityExtension.cs</LastGenOutput>
+      <LastGenOutput>StartActivityExtension.cs.pp</LastGenOutput>
     </None>
     <Content Include="content\net35\External\Diagnostics\Tracer\SystemDiagnostics\StartActivityExtension.cs.pp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="content\net35\External\Diagnostics\Tracer\SystemDiagnostics\TracerManager.cs.pp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="content\net35\External\Diagnostics\Tracer\SystemDiagnostics\StartActivityExtension.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
       <DependentUpon>StartActivityExtension.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+    </Content>
+    <None Include="content\net35\External\Diagnostics\Tracer\SystemDiagnostics\TracerManager.cs" />
+    <None Include="content\net35\External\Diagnostics\Tracer\SystemDiagnostics\TracerManager.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TracerManager.cs.pp</LastGenOutput>
     </None>
-    <None Include="content\net35\External\Diagnostics\Tracer\SystemDiagnostics\TracerManager.cs">
+    <Content Include="content\net35\External\Diagnostics\Tracer\SystemDiagnostics\TracerManager.cs.pp">
       <DependentUpon>TracerManager.tt</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+    </Content>
+    <Compile Include="content\net40\External\Diagnostics\Tracer\SystemDiagnostics\TracerManager.cs" />
+    <None Include="content\net40\External\Diagnostics\Tracer\SystemDiagnostics\TracerManager.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TracerManager.cs.pp</LastGenOutput>
     </None>
     <Content Include="content\net40\External\Diagnostics\Tracer\SystemDiagnostics\TracerManager.cs.pp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="content\net40\External\Diagnostics\Tracer\SystemDiagnostics\StartActivityExtension.cs.pp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Compile Include="content\net40\External\Diagnostics\Tracer\SystemDiagnostics\StartActivityExtension.cs">
-      <DependentUpon>StartActivityExtension.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <Compile Include="content\net40\External\Diagnostics\Tracer\SystemDiagnostics\TracerManager.cs">
       <DependentUpon>TracerManager.tt</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-    </Compile>
+    </Content>
+    <Compile Include="content\net40\External\Diagnostics\Tracer\SystemDiagnostics\StartActivityExtension.cs" />
+    <None Include="content\net40\External\Diagnostics\Tracer\SystemDiagnostics\StartActivityExtension.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StartActivityExtension.cs.pp</LastGenOutput>
+    </None>
+    <Content Include="content\net40\External\Diagnostics\Tracer\SystemDiagnostics\StartActivityExtension.cs.pp">
+      <DependentUpon>StartActivityExtension.tt</DependentUpon>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Content>
     <Compile Include="netfx\System\AppDomainData.cs" />
     <Compile Include="netfx\System\Collections\Generic\DictionaryGetOrAdd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,18 +96,6 @@
     </NuSpec>
   </ItemGroup>
   <ItemGroup>
-    <None Include="content\net35\External\Diagnostics\Tracer\SystemDiagnostics\TracerManager.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>TracerManager.cs</LastGenOutput>
-    </None>
-    <None Include="content\net40\External\Diagnostics\Tracer\SystemDiagnostics\StartActivityExtension.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>StartActivityExtension.cs</LastGenOutput>
-    </None>
-    <None Include="content\net40\External\Diagnostics\Tracer\SystemDiagnostics\TracerManager.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>TracerManager.cs</LastGenOutput>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

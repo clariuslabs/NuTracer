@@ -30,7 +30,7 @@ DAMAGE.
 */
 #endregion
 
-namespace System.Diagnostics
+namespace Tracing
 {
     using System;
     using System.Diagnostics;
