@@ -52,9 +52,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Tracer.Realtime\content\net40\External\Diagnostics\Tracer\TraceEvent.cs">
-      <Link>TraceEvent.cs</Link>
-    </Compile>
     <Compile Include="External\Diagnostics\Tracer\ITracer.cs" />
     <Compile Include="External\Diagnostics\Tracer\ITracerExtensions.cs" />
     <Compile Include="External\Diagnostics\Tracer\ITracerManager.cs" />
@@ -66,6 +63,7 @@
     <Compile Include="netfx\System\Collections\Generic\DictionaryGetOrAdd.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TraceEvent.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

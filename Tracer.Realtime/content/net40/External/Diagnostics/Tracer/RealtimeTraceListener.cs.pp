@@ -101,6 +101,14 @@ namespace $rootnamespace$.Diagnostics
                 hub.Dispose();
         }
 
+        public override void Write(string message)
+        {
+        }
+
+        public override void WriteLine(string message)
+        {
+        }
+
         // NOTE: Tracer.SystemDiagnostics for .NET 4.0+ (required to use this listener)
         // always traces asynchronously, so it's fine to just Wait() here for the connection, 
         // since this would NOT be slowing down the app in any way. Also, Tracer will trace 
@@ -120,7 +128,7 @@ namespace $rootnamespace$.Diagnostics
                 hub.Start().Wait();
             }
 
-            proxy.Invoke("BroadcastTraceEvent", new TraceEvent
+            proxy.Invoke("BroadcastTraceEvent", new TraceEventInfo
             {
                 EventType = eventType,
                 Source = source,
@@ -128,12 +136,25 @@ namespace $rootnamespace$.Diagnostics
             });
         }
 
-        public override void Write(string message)
+        /// <summary>
+        /// Payload data to send to the hub about the traced event.
+        /// </summary>
+        partial class TraceEventInfo
         {
-        }
+            /// <summary>
+            /// Gets or sets the type of the event trace.
+            /// </summary>
+            public TraceEventType EventType { get; set; }
 
-        public override void WriteLine(string message)
-        {
+            /// <summary>
+            /// Gets or sets the trace message.
+            /// </summary>
+            public string Message { get; set; }
+
+            /// <summary>
+            /// Gets or sets the source of the trace event.
+            /// </summary>
+            public string Source { get; set; }
         }
     }
 }

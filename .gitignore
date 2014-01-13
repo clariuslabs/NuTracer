@@ -16,3 +16,5 @@ Drop
 /Tracer.Log4Net/*.t4properties
 
 /Tracer.SystemDiagnostics/*.t4properties
+
+/Tracer.NLog/*.t4properties
