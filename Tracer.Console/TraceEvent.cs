@@ -30,7 +30,7 @@ DAMAGE.
 */
 #endregion
 
-namespace Tracer
+namespace TracerHub
 {
     using System;
     using System.Collections.Generic;
@@ -41,7 +41,7 @@ namespace Tracer
     /// <summary>
     /// Payload data to send to the hub about the traced event.
     /// </summary>
-    partial class TraceEventInfo
+    partial class TraceEvent
     {
         /// <summary>
         /// Gets or sets the type of the event trace.

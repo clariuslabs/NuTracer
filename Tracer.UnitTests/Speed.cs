@@ -1,9 +1,11 @@
-﻿
+﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Tracing.SystemDiagnostics;
 using Xunit;
 
-namespace System.Diagnostics.UnitTests
+namespace Tracing
 {
     public class Speed
     {
@@ -12,7 +14,7 @@ namespace System.Diagnostics.UnitTests
         {
             var repeat = 100000;
 
-            Tracer.Initialize(new System.Diagnostics.TracerManager());
+            Tracer.Initialize(new TracerManager());
 
             Tracer.Get("A.B.C.D").Info("Warming up");
 

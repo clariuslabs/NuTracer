@@ -1,10 +1,11 @@
 ﻿using Moq;
 using Xunit;
 using System.IO;
-using Interfaces;
-using SystemDiagnostics;
+using Tracing.SystemDiagnostics;
+using System.Diagnostics;
+using System;
 
-namespace System.Diagnostics.UnitTests
+namespace Tracing
 {
     public class DiagnosticsTracerSpec
     {

@@ -30,7 +30,7 @@ DAMAGE.
 */
 #endregion
 
-namespace Realtime
+namespace Tracing.Realtime
 {
     using Microsoft.AspNet.SignalR.Client;
     using System;

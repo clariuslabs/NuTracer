@@ -5,9 +5,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using Tracing.Realtime;
 using Xunit;
 
-namespace Tracer.UnitTests
+namespace Tracing
 {
     public class RealtimeSpec
     {
@@ -50,6 +51,13 @@ namespace Tracer.UnitTests
                     Assert.Equal("Foo", traces[0].Message);
                 }
             }
+        }
+
+        public class TraceEvent
+        {
+            public TraceEventType EventType { get; set; }
+            public string Message { get; set; }
+            public string Source { get; set; }
         }
     }
 }
