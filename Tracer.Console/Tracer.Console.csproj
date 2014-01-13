@@ -1,21 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{837D4AB8-AE2F-498A-B519-95A1F692FEDD}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{BBFB96A3-3191-4BFD-8EE3-BE3C38EA8D04}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Tracer.UnitTests</RootNamespace>
-    <AssemblyName>Tracer.UnitTests</AssemblyName>
+    <RootNamespace>Tracer</RootNamespace>
+    <AssemblyName>Tracer</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,58 +24,60 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.AspNet.SignalR.Client">
       <HintPath>..\packages\Microsoft.AspNet.SignalR.Client.2.0.1\lib\net40\Microsoft.AspNet.SignalR.Client.dll</HintPath>
     </Reference>
-    <Reference Include="Moq">
-      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="xunit">
-      <HintPath>..\packages\xunit.1.9.1\lib\net20\xunit.dll</HintPath>
-    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="content\External\Diagnostics\DiagnosticsTracerSpec.cs" />
-    <Compile Include="content\External\Diagnostics\Speed.cs" />
-    <Compile Include="RealtimeSpec.cs" />
+    <Compile Include="..\Tracer.Realtime\content\net40\External\Diagnostics\Tracer\TraceEvent.cs">
+      <Link>TraceEvent.cs</Link>
+    </Compile>
+    <Compile Include="External\Diagnostics\Tracer\ITracer.cs" />
+    <Compile Include="External\Diagnostics\Tracer\ITracerExtensions.cs" />
+    <Compile Include="External\Diagnostics\Tracer\ITracerManager.cs" />
+    <Compile Include="External\Diagnostics\Tracer\SystemDiagnostics\StartActivityExtension.cs" />
+    <Compile Include="External\Diagnostics\Tracer\SystemDiagnostics\TracerManager.cs" />
+    <Compile Include="External\Diagnostics\Tracer\Tracer.cs" />
+    <Compile Include="External\Diagnostics\Tracer\Visibility.cs" />
+    <Compile Include="netfx\System\AppDomainData.cs" />
+    <Compile Include="netfx\System\Collections\Generic\DictionaryGetOrAdd.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Tracer.Realtime\Tracer.Realtime.csproj">
-      <Project>{3427c0bd-b887-4a38-a24d-3c45326440db}</Project>
-      <Name>Tracer.Realtime</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Tracer.SystemDiagnostics\Tracer.SystemDiagnostics.csproj">
-      <Project>{3AFCD64A-029F-4842-A2E0-51D9EE380040}</Project>
-      <Name>Tracer.SystemDiagnostics</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Tracer.Interfaces\Tracer.Interfaces.csproj">
-      <Project>{EFD24E29-A093-49E4-A1E2-770E39FCC39B}</Project>
-      <Name>Tracer.Interfaces</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>
