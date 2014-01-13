@@ -84,14 +84,14 @@ namespace $rootnamespace$.Diagnostics
         /// </summary>
         public ITracer Get(string name)
         {
-            return new NLogAdapter(LogManager.GetLogger(name));
+            return new NLogAdapter(global::NLog.LogManager.GetLogger(name));
         }
 
         private class NLogAdapter : ITracer
         {
-            private Logger log;
+            private global::NLog.Logger log;
 
-            public NLogAdapter(Logger log)
+            public NLogAdapter(global::NLog.Logger log)
             {
                 this.log = log;
             }

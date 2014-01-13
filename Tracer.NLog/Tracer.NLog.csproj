@@ -41,14 +41,11 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="content\External\Diagnostics\Tracer\NLog\TracerManager.cs.pp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Compile Include="content\External\Diagnostics\Tracer\NLog\TracerManager.cs">
-      <DependentUpon>TracerManager.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
+    <Compile Include="content\External\Diagnostics\Tracer\NLog\TracerManager.cs" />
+    <None Include="content\External\Diagnostics\Tracer\NLog\TracerManager.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>TracerManager.cs.pp</LastGenOutput>
+    </None>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -64,9 +61,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="content\External\Diagnostics\Tracer\NLog\TracerManager.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>TracerManager.cs</LastGenOutput>
+    <None Include="content\External\Diagnostics\Tracer\NLog\TracerManager.cs.pp">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TracerManager.tt</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -76,4 +74,5 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\Tracer.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="..\packages\Clarius.TransformOnBuild.1.0.2\build\Clarius.TransformOnBuild.targets" Condition="Exists('..\packages\Clarius.TransformOnBuild.1.0.2\build\Clarius.TransformOnBuild.targets')" />
 </Project>
