@@ -39,7 +39,11 @@ namespace Tracing.Realtime
     using System.Diagnostics;
     using System.Globalization;
 
-    public class RealtimeTraceListener : TraceListener
+    /// <summary>
+    /// Provides a <see cref="TraceListener"/> implementation that connects to a 
+    /// remote SignalR hub to dispatch calls to its <c>TraceEvent</c> overloads.
+    /// </summary>
+    public partial class RealtimeTraceListener : TraceListener
     {
         /// <summary>
         /// The SignalR hosted hub. Change to your own host URL if self-hosting.
@@ -49,8 +53,6 @@ namespace Tracing.Realtime
 
         static readonly string hubUrl;
         string groupName;
-        HubConnection hub;
-        IHubProxy proxy;
 
         /// <summary>
         /// Initializes the Hub URL from the <c>HubUrl</c> appSettings configuration 
@@ -75,6 +77,22 @@ namespace Tracing.Realtime
             this.groupName = groupName;
         }
 
+        ~RealtimeTraceListener()
+        {
+            Dispose(false);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Gets the SignalR hub, if connected. Null otherwise.
+        /// </summary>
+        public HubConnection Hub { get; private set; }
+        
+        /// <summary>
+        /// Gets the SignalR hub proxy, if connected. Null otherwise.
+        /// </summary>
+        public IHubProxy Proxy { get; private set; }
+
         public override void TraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id, string message)
         {
             if ((this.Filter == null) || this.Filter.ShouldTrace(eventCache, source, eventType, id, message, null, null, null))
@@ -94,20 +112,45 @@ namespace Tracing.Realtime
             }
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            if (hub != null)
-                hub.Dispose();
-        }
-
+        /// <summary>
+        /// No-op, since this listener only pushes <c>TraceEvent</c> calls.
+        /// </summary>
         public override void Write(string message)
         {
         }
 
+        /// <summary>
+        /// No-op, since this listener only pushes <c>TraceEvent</c> calls.
+        /// </summary>
         public override void WriteLine(string message)
         {
         }
+
+        /// <summary>
+        /// Disposes the underlying SignalR hub, if connected.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (disposing && Hub != null)
+            {
+                Hub.Dispose();
+                Hub = null;
+            }
+        }
+
+        /// <summary>
+        /// Invoked when the <see cref="Hub"/> and <see cref="Proxy"/> are created 
+        /// but before connecting to the remote hub via the <c>Start</c> method 
+        /// on the <see cref="Hub"/>.
+        /// </summary>
+        partial void OnConnecting();
+
+        /// <summary>
+        /// Invoked when the <see cref="Hub"/> and <see cref="Proxy"/> are created 
+        /// and connected to the remote hub.
+        /// </summary>
+        partial void OnConnected();
 
         // NOTE: Tracer.SystemDiagnostics for .NET 4.0+ (required to use this listener)
         // always traces asynchronously, so it's fine to just Wait() here for the connection, 
@@ -116,19 +159,22 @@ namespace Tracing.Realtime
         // an explicit lock.
         private void DoTraceEvent(TraceEventCache eventCache, string source, TraceEventType eventType, int id, string message)
         {
-            if (hub == null)
+            if (Hub == null)
             {
                 var data = new Dictionary<string, string>
                 {
                     { "groupName", groupName }
                 };
 
-                hub = new HubConnection(hubUrl, data);
-                proxy = hub.CreateHubProxy(HubName);
-                hub.Start().Wait();
+                Hub = new HubConnection(hubUrl, data);
+                Proxy = Hub.CreateHubProxy(HubName);
+                OnConnecting();
+                Hub.Start().Wait();
+                OnConnected();
+
             }
 
-            proxy.Invoke("BroadcastTraceEvent", new TraceEventInfo
+            Proxy.Invoke("TraceEvent", new TraceEventInfo
             {
                 EventType = eventType,
                 Source = source,

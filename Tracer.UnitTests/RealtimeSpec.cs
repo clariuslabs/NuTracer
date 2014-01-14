@@ -53,6 +53,44 @@ namespace Tracing
             }
         }
 
+        [Fact]
+        public void when_changing_tracing_level_remotely_then_client_gets_new_traces()
+        {
+            var traces = new List<TraceEvent>();
+            var source = new TraceSource("Source", SourceLevels.Error);
+            using (var listener = new RealtimeTraceListener("Test"))
+            {
+                source.Listeners.Add(listener);
+
+                var data = new Dictionary<string, string>
+                {
+                    { "groupName", "Test" }
+                };
+
+                using (var hub = new HubConnection(TracerHubUrl, data))
+                {
+                    IHubProxy proxy = hub.CreateHubProxy(HubName);
+                    proxy.On<TraceEvent>("TraceEvent", trace => traces.Add(trace));
+
+                    hub.Start().Wait();
+
+                    source.TraceInformation("Foo");
+
+                    var watch = Stopwatch.StartNew();
+                    var timeout = TimeSpan.FromSeconds(2);
+                    while (watch.Elapsed < timeout)
+                    {
+                        Thread.Sleep(100);
+                    }
+
+                    Assert.Equal(1, traces.Count);
+                    Assert.Equal(TraceEventType.Information, traces[0].EventType);
+                    Assert.Equal("Source", traces[0].Source);
+                    Assert.Equal("Foo", traces[0].Message);
+                }
+            }
+        }
+
         public class TraceEvent
         {
             public TraceEventType EventType { get; set; }

@@ -41,7 +41,8 @@ namespace TracerHub
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
-    using TracerHub.Diagnostics;
+    using Tracing;
+    using Tracing.SystemDiagnostics;
 
     class Program
     {
@@ -58,7 +59,7 @@ namespace TracerHub
             if (args.Length != 1)
             {
                 Console.WriteLine("Usage: " + typeof(Program).Assembly.ManifestModule.FullyQualifiedName + " groupName");
-                Console.WriteLine("Press [Enter] to exit.");
+                Console.WriteLine("Press 'Q' to exit.");
                 Console.ReadLine();
                 return;
             }
@@ -73,36 +74,62 @@ namespace TracerHub
                 IHubProxy proxy = hub.CreateHubProxy(HubName);
                 IDisposable handler = proxy.On<TraceEvent>("TraceEvent", trace => Tracer.Get(trace.Source).Trace(trace.EventType, trace.Message));
 
+#if DEBUG
+                //hub.TraceLevel = TraceLevels.All;
+                //hub.TraceWriter = Console.Out;
+#endif
+
                 hub.Start().Wait();
 
-                Console.WriteLine("Broadcast trace event: [E(rror)|I(nformation)|W(arning)]:[Source]:[Message]");
-                Console.WriteLine("Quit: Q|q");
+                Console.WriteLine("Send trace event:  [E(rror)|I(nformation)|W(arning)]:[Source]:[Message]");
+                Console.WriteLine("Set tracing level: [Source]=[Off|Critical|Error|Warning|Information|Verbose|All]");
+                Console.WriteLine("Press 'Q' to exit.");
                 var line = Console.ReadLine();
 
                 while (!line.Equals("Q", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    var trace = line.Split(new [] { ':' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (trace.Length == 3)
+                    if (line.IndexOf(':') != -1)
                     {
-                        TraceEventType type = TraceEventType.Information;
-                        switch (trace[0])
+                        var trace = line.Split(new[] { ':' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (trace.Length == 3)
                         {
-                            case "E":
-                                type = TraceEventType.Error;
-                                break;
-                            case "W":
-                                type = TraceEventType.Warning;
-                                break;
-                            default:
-                                break;
-                        }
+                            var type = TraceEventType.Information;
+                            switch (trace[0])
+                            {
+                                case "E":
+                                    type = TraceEventType.Error;
+                                    break;
+                                case "W":
+                                    type = TraceEventType.Warning;
+                                    break;
+                                default:
+                                    break;
+                            }
 
-                        proxy.Invoke("BroadcastTraceEvent", new TraceEvent
+                            proxy.Invoke("TraceEvent", new TraceEvent
+                            {
+                                EventType = type,
+                                Source = trace[1],
+                                Message = trace[2],
+                            });
+                        }
+                        else
                         {
-                            EventType = type,
-                            Source = trace[1],
-                            Message = trace[2],
-                        });
+                            Console.WriteLine("Send trace event:  [E(rror)|I(nformation)|W(arning)]:[Source]:[Message]");
+                        }
+                    }
+                    else if (line.IndexOf('=') != -1)
+                    {
+                        var trace = line.Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
+                        SourceLevels level;
+                        if (trace.Length == 2 && Enum.TryParse<SourceLevels>(trace[1], out level))
+                        {
+                            proxy.Invoke("SetTracingLevel", trace[0], level);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Set tracing level: [Source]=[Off|Critical|Error|Warning|Information|Verbose|All]");
+                        }
                     }
 
                     line = Console.ReadLine();
