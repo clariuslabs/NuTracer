@@ -233,7 +233,7 @@ namespace $rootnamespace$.Diagnostics
         /// </summary>
         private TraceSource GetOrAdd(string sourceName, Func<string, TraceSource> factory)
         {
-            var cachedSources = AppDomain.CurrentDomain.GetData<Dictionary<string, TraceSource>>();
+            var cachedSources = AppDomain.CurrentDomain.GetData<ConcurrentDictionary<string, TraceSource>>();
             if (cachedSources == null)
             {
                 // This lock guarantees that throughout the current 
@@ -241,10 +241,10 @@ namespace $rootnamespace$.Diagnostics
                 // created ever.
                 lock (AppDomain.CurrentDomain)
                 {
-                    cachedSources = AppDomain.CurrentDomain.GetData<Dictionary<string, TraceSource>>();
+                    cachedSources = AppDomain.CurrentDomain.GetData<ConcurrentDictionary<string, TraceSource>>();
                     if (cachedSources == null)
                     {
-                        cachedSources = new Dictionary<string, TraceSource>();
+                        cachedSources = new ConcurrentDictionary<string, TraceSource>();
                         AppDomain.CurrentDomain.SetData(cachedSources);
                     }
                 }
