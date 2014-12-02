@@ -7,13 +7,11 @@ function Push-Packages
 {
 	param([string] $relativePath)
 
-	$apiKey = Get-Content apikey.txt
-
 	Build-Packages $relativePath
 
 	Write-Progress -Activity "Pushing" -Status "Publishing built packages recursively"
 
-	Get-ChildItem -Path $relativePath -Recurse -Filter *.nupkg | Where-Object { $_.DirectoryName.EndsWith("bin\Release") }  | %{ .\nuget.exe Push $_.FullName $apiKey }
+	Get-ChildItem -Path $relativePath -Recurse -Filter *.nupkg | Where-Object { $_.DirectoryName.EndsWith("bin\Release") }  | %{ .\nuget.exe Push $_.FullName }
 
 	Write-Progress -Activity "Pushing" -Status "Done!" -Completed
 }
@@ -51,8 +49,26 @@ function Build-Packages
 {
 	param([string] $relativePath)
 
-	$msbuild = [System.Environment]::ExpandEnvironmentVariables("%windir%\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe")
+	$msbuilds = @(get-command msbuild -ea SilentlyContinue)
+	if ($msbuilds.Count -eq 0) {
+		throw "MSBuild could not be found in the path. Please ensure MSBuild is in the path."
+	}
 
+	if (!(test-path ".\.nuget\NuGet.exe")) {
+		if (!(test-path ".\.nuget")) {
+			mkdir .nuget | out-null
+		}
+		write-host Downloading NuGet.exe...
+		invoke-webrequest "https://nuget.org/nuget.exe" -outfile ".\.nuget\NuGet.exe"
+	}
+
+	if (test-path ".\packages.config") {
+		write-host Installing root-level NuGet packages...
+		.\.nuget\NuGet.exe Install -OutputDirectory packages -ExcludeVersion
+	}
+
+	$msbuild = $msbuilds[0].Definition
+	
 	Write-Progress -Activity "Building" -Status "Building release recursively"
 
 	# Build all extensions
