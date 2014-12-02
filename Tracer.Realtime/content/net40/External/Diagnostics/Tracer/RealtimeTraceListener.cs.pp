@@ -174,7 +174,7 @@ namespace $rootnamespace$.Diagnostics
 
             }
 
-            Proxy.Invoke("BroadcastTraceEvent", new TraceEventInfo
+            Proxy.Invoke("TraceEvent", new TraceEventInfo
             {
                 EventType = eventType,
                 Source = source,
