@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
 		<id>Tracer.SystemDiagnostics</id>
-		<version>1.2</version>
+		<version>1.2.1</version>
 		<title>Tracer: System.Diagnostics</title>
         <summary>Adapter based on the System.Diagnostics classes for the general tracer interface.</summary>
         <description>Implements the tracing interface on top of the System.Diagnostics.TraceSource capabilities, extending it with log4net-style hierarchical logging and runtime dynamic configurability of trace sources.</description>
@@ -21,7 +21,10 @@
             <dependency id="netfx-System.AppDomainData" version="1.1" />
             <dependency id="netfx-System.Collections.Generic.DictionaryGetOrAdd" version="1.1" />
         </dependencies>
-        <releaseNotes>
+        <releaseNotes>            
+Version 1.2.1
+* Added support for Mono on Mac and Linux.
+            
 Version 1.1.7
 * Added support for XML traces that can be opened with Service Trace Viewer
 

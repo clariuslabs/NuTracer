@@ -391,7 +391,20 @@ namespace Tracing.SystemDiagnostics
                 // Private reflection needed here in order to make the inherited source names still 
                 // log as if the original source name was the one logging, so as not to lose the 
                 // originating class name.
-                private static readonly FieldInfo sourceNameField = typeof(TraceSource).GetField("sourceName", BindingFlags.Instance | BindingFlags.NonPublic);
+                static readonly FieldInfo sourceNameField = typeof(TraceSource).GetField("sourceName", BindingFlags.Instance | BindingFlags.NonPublic);
+                static readonly FieldInfo sourceNameFieldForMono = typeof(Switch).GetField("name", BindingFlags.Instance | BindingFlags.NonPublic);
+                static Action<TraceSource, string> sourceNameSetter;
+
+                static SourceNameReplacer()
+                {
+                    if (sourceNameField != null)
+                        sourceNameSetter = (source, name) => sourceNameField.SetValue(source, name);
+                    else if (sourceNameFieldForMono != null)
+                        sourceNameSetter = (source, name) => sourceNameFieldForMono.SetValue(source.Switch, name);
+                    else 
+                        // We don't know how to replace the source name unfortunately.
+                        sourceNameSetter = (source, name) => { };
+                }
 
                 private TraceSource source;
                 private string originalName;
@@ -400,15 +413,16 @@ namespace Tracing.SystemDiagnostics
                 {
                     this.source = source;
                     this.originalName = source.Name;
+
                     // Transient change of the source name while the trace call 
                     // is issued. Multi-threading might still cause messages to come 
                     // out with wrong source names :(
-                    sourceNameField.SetValue(source, sourceName);
+                    sourceNameSetter(source, sourceName);
                 }
 
                 public void Dispose()
                 {
-                    sourceNameField.SetValue(source, originalName);
+                    sourceNameSetter(source, originalName);
                 }
             }
         }
