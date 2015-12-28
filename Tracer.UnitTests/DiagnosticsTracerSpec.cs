@@ -110,5 +110,18 @@ namespace Tracing
 
             Console.WriteLine(writer.ToString());
         }
+
+        [Fact]
+        public void when_tracing_activity_with_predefined_entity_in_name_then_succeeds()
+        {
+            var listener = new Mock<TraceListener>();
+            manager.AddListener("Foo", listener.Object);
+
+            manager.SetTracingLevel("Foo", SourceLevels.Information);
+
+            var tracer = Tracer.Get("Foo");
+
+            tracer.StartActivity("&");
+        }
     }
 }
