@@ -110,6 +110,16 @@ namespace Tracing.SystemDiagnostics
 
             class ActivityData : XPathNavigator
             {
+                static readonly XNamespace TraceRecordNamespace = XNamespace.Get("http://schemas.microsoft.com/2004/10/E2ETraceEvent/TraceRecord");
+                static readonly XNamespace DictionaryTraceRecordNamespace = XNamespace.Get("http://schemas.microsoft.com/2006/08/ServiceModel/DictionaryTraceRecord");
+                static readonly XName TraceRecord = TraceRecordNamespace + "TraceRecord";
+                static readonly XName TraceIdentifier = TraceRecordNamespace + "TraceIdentifier";
+                static readonly XName Description = TraceRecordNamespace + "Description";
+                static readonly XName AppDomain = TraceRecordNamespace + "AppDomain";
+                static readonly XName ExtendedData = DictionaryTraceRecordNamespace + "ExtendedData";
+                static readonly XName ActivityName = DictionaryTraceRecordNamespace + "ActivityName";
+                static readonly XName ActivityType = DictionaryTraceRecordNamespace + "ActivityType";
+
                 string displayName;
                 XPathNavigator xml;
 
@@ -119,16 +129,19 @@ namespace Tracing.SystemDiagnostics
 
                     // The particular XML format expected by the Service Trace Viewer was 
                     // inferred from the actual tool behavior and usage.
-                    this.xml = XDocument.Parse(string.Format(@"
-        <TraceRecord xmlns='http://schemas.microsoft.com/2004/10/E2ETraceEvent/TraceRecord' Severity='{0}'>
-            <TraceIdentifier>http://msdn.microsoft.com/en-US/library/System.ServiceModel.Diagnostics.ActivityBoundary.aspx</TraceIdentifier>
-            <Description>Activity boundary.</Description>
-            <AppDomain>client.vshost.exe</AppDomain>
-            <ExtendedData xmlns='http://schemas.microsoft.com/2006/08/ServiceModel/DictionaryTraceRecord'>
-                <ActivityName>{1}</ActivityName>
-                <ActivityType>ActivityTracing</ActivityType>
-            </ExtendedData>
-        </TraceRecord>", isStart ? "Start" : "Stop", displayName)).CreateNavigator();
+                    this.xml = (new XDocument(
+                        new XElement(TraceRecord,
+                            new XAttribute("xmlns", TraceRecordNamespace),
+                            new XAttribute("Severity", isStart ? "Start" : "Stop"),
+                            new XElement(TraceIdentifier, "http://msdn.microsoft.com/en-US/library/System.ServiceModel.Diagnostics.ActivityBoundary.aspx"),
+                            new XElement(Description, "Activity boundary."),
+                            new XElement(AppDomain, "client.vshost.exe"),
+                            new XElement(ExtendedData,
+                                new XElement(ActivityName, displayName),
+                                new XElement(ActivityType, "ActivityTracing")
+                            )
+                        )
+                    )).CreateNavigator();
                 }
 
                 public override string BaseURI
