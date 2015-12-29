@@ -112,6 +112,13 @@ namespace $rootnamespace$.Diagnostics
             {
                 static readonly XNamespace TraceRecordNamespace = XNamespace.Get("http://schemas.microsoft.com/2004/10/E2ETraceEvent/TraceRecord");
                 static readonly XNamespace DictionaryTraceRecordNamespace = XNamespace.Get("http://schemas.microsoft.com/2006/08/ServiceModel/DictionaryTraceRecord");
+                static readonly XName TraceRecord = TraceRecordNamespace + "TraceRecord";
+                static readonly XName TraceIdentifier = TraceRecordNamespace + "TraceIdentifier";
+                static readonly XName Description = TraceRecordNamespace + "Description";
+                static readonly XName AppDomain = TraceRecordNamespace + "AppDomain";
+                static readonly XName ExtendedData = DictionaryTraceRecordNamespace + "ExtendedData";
+                static readonly XName ActivityName = DictionaryTraceRecordNamespace + "ActivityName";
+                static readonly XName ActivityType = DictionaryTraceRecordNamespace + "ActivityType";
 
                 string displayName;
                 XPathNavigator xml;
@@ -123,15 +130,15 @@ namespace $rootnamespace$.Diagnostics
                     // The particular XML format expected by the Service Trace Viewer was 
                     // inferred from the actual tool behavior and usage.
                     this.xml = (new XDocument(
-                        new XElement(TraceRecordNamespace + "TraceRecord",
+                        new XElement(TraceRecord,
                             new XAttribute("xmlns", TraceRecordNamespace),
                             new XAttribute("Severity", isStart ? "Start" : "Stop"),
-                            new XElement(TraceRecordNamespace + "TraceIdentifier", "http://msdn.microsoft.com/en-US/library/System.ServiceModel.Diagnostics.ActivityBoundary.aspx"),
-                            new XElement(TraceRecordNamespace + "Description", "Activity boundary."),
-                            new XElement(TraceRecordNamespace + "AppDomain", "client.vshost.exe"),
-                            new XElement(DictionaryTraceRecordNamespace + "ExtendedData",
-                                new XElement(DictionaryTraceRecordNamespace + "ActivityName", displayName),
-                                new XElement(DictionaryTraceRecordNamespace + "ActivityType", "ActivityTracing")
+                            new XElement(TraceIdentifier, "http://msdn.microsoft.com/en-US/library/System.ServiceModel.Diagnostics.ActivityBoundary.aspx"),
+                            new XElement(Description, "Activity boundary."),
+                            new XElement(AppDomain, "client.vshost.exe"),
+                            new XElement(ExtendedData,
+                                new XElement(ActivityName, displayName),
+                                new XElement(ActivityType, "ActivityTracing")
                             )
                         )
                     )).CreateNavigator();
